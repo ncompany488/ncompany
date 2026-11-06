@@ -243,7 +243,9 @@
   function renderChips() {
     // 해외 탭에선 해외 사이트 칩만, 나머지 탭에선 국내 사이트 칩만
     const wantGlobal = state.region === "global";
-    $("#chips").innerHTML = (state.data.sources || []).filter((s) => (s.region === "global") === wantGlobal).map((s) =>
+    // 지금 목록에 딜이 하나도 없는 소스(예: 서버에서 차단된 사이트)는 칩을 숨김
+    const has = new Set((state.data.groups || []).flatMap((g) => (g.sources || []).map((s) => s.source)));
+    $("#chips").innerHTML = (state.data.sources || []).filter((s) => (s.region === "global") === wantGlobal && has.has(s.key)).map((s) =>
       `<button class="chip${state.off.has(s.key) ? " off" : ""}" data-k="${esc(s.key)}">${esc(s.name)}</button>`).join("");
   }
 
@@ -251,7 +253,8 @@
     if (!st || typeof st.sources !== "object" || !st.sources) return;
     const meta = srcMeta();
     $("#status").innerHTML = Object.entries(st.sources).map(([k, v]) =>
-      `<li title="${esc(v?.error || "")}"><span class="${v?.ok ? "ok" : "err"}">●</span> ${esc(meta[k]?.name || k)} — ${v?.ok ? num(v.count) + "개" : "오류"}</li>`).join("")
+      // blocked = 사이트가 수집을 막음(robots.txt·서버 차단) → 오류가 아니라 '수집 불가' 로 표시
+      `<li title="${esc(v?.error || "")}"><span class="${v?.ok ? "ok" : v?.blocked ? "muted" : "err"}">●</span> ${esc(meta[k]?.name || k)} — ${v?.ok ? num(v.count) + "개" : v?.blocked ? "사이트가 자동 수집을 막아 제외" : "오류"}</li>`).join("")
       + (ago(st.run_at) ? `<li>마지막 수집: ${esc(new Date(st.run_at).toLocaleString("ko-KR"))}</li>` : "");
   }
 

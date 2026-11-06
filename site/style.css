@@ -59,7 +59,7 @@ select { padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); ba
 .foot summary { cursor: pointer; color: var(--text); }
 .foot a { color: var(--link); }
 .status { list-style: none; padding: 0; }
-.status .ok { color: var(--ok); } .status .err { color: var(--accent); }
+.status .ok { color: var(--ok); } .status .err { color: var(--accent); } .status .muted { color: var(--muted); }
 code { background: var(--chip); padding: 0 4px; border-radius: 4px; }
 /* 역대 최저가 */
 .prow { display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: center; margin-top: 2px; font-size: 13px; color: var(--muted); }

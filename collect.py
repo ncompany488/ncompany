@@ -104,7 +104,9 @@ def main() -> None:
         for mod, deals, err, sec in ex.map(fetch_one, mods):
             key = mod.SOURCE.key
             status["sources"][key] = {"ok": err is None, "count": len(deals),
-                                      "error": err, "seconds": round(sec, 1)}
+                                      "error": err, "seconds": round(sec, 1),
+                                      # robots.txt 금지·서버 차단은 고장이 아니라 '수집 불가'
+                                      "blocked": bool(err and err.startswith("RobotsDisallowed"))}
             print(f"  {key:16} {'OK ' if err is None else 'ERR'} {len(deals):3}개 {sec:5.1f}s {err or ''}")
             fresh.extend(deals)
 
