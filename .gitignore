@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+*.tmp
+# 수집 결과는 data 브랜치/Pages 에만 저장
+data/
+site/data/

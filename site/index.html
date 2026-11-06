@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>핫딜 허브</title>
+<meta name="description" content="뽐뿌·루리웹·클리앙·아카라이브·공식몰·해외 핫딜을 한곳에서">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-row">
+    <h1>🔥 핫딜 허브</h1>
+    <input id="q" type="search" placeholder="검색 (예: 에어팟, 라면, 모니터)" autocomplete="off">
+    <button id="theme" class="icon" title="다크 모드 전환" aria-label="다크 모드 전환">◐</button>
+  </div>
+  <div class="wrap controls">
+    <div class="seg" id="region">
+      <button data-v="all" class="on">전체</button>
+      <button data-v="kr">국내</button>
+      <button data-v="official">공식몰</button>
+      <button data-v="global">해외</button>
+    </div>
+    <select id="sort" aria-label="정렬">
+      <option value="new">최신순</option>
+      <option value="hot">인기순</option>
+      <option value="multi">여러 곳 공유순</option>
+      <option value="cheap">가격 낮은순</option>
+    </select>
+    <label class="chk"><input type="checkbox" id="hideEnded" checked> 종료 숨기기</label>
+    <label class="chk"><input type="checkbox" id="multiOnly"> 2곳 이상만</label>
+  </div>
+  <div class="wrap chips" id="chips"></div>
+</header>
+
+<main class="wrap">
+  <p class="meta" id="meta">불러오는 중…</p>
+  <ul id="list" class="list"></ul>
+  <button id="more" class="more" hidden>더 보기</button>
+  <p id="empty" class="empty" hidden>조건에 맞는 딜이 없어요.</p>
+</main>
+
+<footer class="wrap foot">
+  <details>
+    <summary>📨 텔레그램 키워드 알림 받기</summary>
+    <ol>
+      <li>텔레그램에서 <a id="botLink" href="#" target="_blank" rel="noopener">알림봇</a>을 열고 <code>/start</code></li>
+      <li><code>/add 에어팟 프로</code> 처럼 키워드 등록 (<code>-중고</code> 제외, <code>&lt;15000</code> 가격 상한)</li>
+      <li>새 딜이 수집될 때 맞는 딜을 보내드려요 (수집 주기만큼 지연될 수 있어요)</li>
+    </ol>
+  </details>
+  <details>
+    <summary>수집 상태</summary>
+    <ul id="status" class="status"></ul>
+  </details>
+  <p>제목과 링크만 모아 보여주며, 모든 글의 권리는 원 게시처에 있습니다. 각 사이트의 robots.txt를 따릅니다.</p>
+</footer>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
