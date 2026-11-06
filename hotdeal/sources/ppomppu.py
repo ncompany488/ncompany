@@ -19,6 +19,8 @@ LIST_URL = "https://www.ppomppu.co.kr/zboard/zboard.php"
 SOURCE = SourceInfo(key="ppomppu", name="뽐뿌",
                     homepage=f"{LIST_URL}?id={BOARD_ID}", region="kr")
 
+MAX_BACKFILL_PAGES = 999  # page=1000 부터는 서버가 403 (2026-11 실측: 999 쪽은 약 6.5개월 전)
+
 
 def _abs(src: str | None) -> str | None:
     if not src or "noimage" in src:
@@ -68,17 +70,27 @@ def _parse_row(tr) -> Deal | None:
     )
 
 
+def fetch_page(page: int) -> list[Deal]:
+    """목록 N페이지(1부터) 의 딜. 페이지가 비었거나 끝이면 []."""
+    r = http.get(LIST_URL, params={"id": BOARD_ID, "page": page}, encoding="cp949")
+    soup = BeautifulSoup(r.text, "lxml")
+    deals, seen = [], set()
+    for tr in soup.select("tr.baseList"):  # 공지(baseNotice)는 제외됨
+        try:
+            d = _parse_row(tr)
+        except Exception:  # 한 줄이 깨져도 나머지는 계속
+            continue
+        if d and d.url not in seen:
+            seen.add(d.url)
+            deals.append(d)
+    return deals
+
+
 def fetch(limit: int = 40) -> list[Deal]:
     deals, seen = [], set()
     for page in (1, 2, 3):  # 한 페이지가 ~28개라 모자라면 다음 페이지
-        r = http.get(LIST_URL, params={"id": BOARD_ID, "page": page}, encoding="cp949")
-        soup = BeautifulSoup(r.text, "lxml")
-        for tr in soup.select("tr.baseList"):  # 공지는 baseNotice 라 제외됨
-            try:
-                d = _parse_row(tr)
-            except Exception:  # 한 줄이 깨져도 나머지는 계속
-                continue
-            if d and d.url not in seen:
+        for d in fetch_page(page):
+            if d.url not in seen:
                 seen.add(d.url)
                 deals.append(d)
         if len(deals) >= limit:

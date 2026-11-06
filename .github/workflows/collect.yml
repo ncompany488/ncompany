@@ -38,11 +38,19 @@ jobs:
 
       - name: 이전 누적 데이터 가져오기
         run: |
-          # 첫 실행엔 data 브랜치가 없으므로 건너뜀 (collect.py 가 첫 실행 알림을 막음)
-          if git fetch --depth=1 origin data 2>/dev/null; then
-            git checkout FETCH_HEAD -- data || true
+          # data 브랜치가 '정말 없을 때만' 새로 시작. 있는데 못 가져오면 실패시켜서
+          # 빈 데이터로 누적 가격 기록(history.json)을 덮어쓰는 사고를 막음
+          if git ls-remote --exit-code --heads origin data >/dev/null; then
+            git fetch --depth=1 origin data
+            git checkout FETCH_HEAD -- data
+            ls -la data
           else
-            echo "data 브랜치 없음 → 새로 시작"
+            code=$?
+            if [ "$code" -eq 2 ]; then
+              echo "data 브랜치 없음 → 새로 시작"
+            else
+              echo "data 브랜치 확인 실패(code=$code) → 기록 보호를 위해 중단"; exit 1
+            fi
           fi
 
       - name: 수집

@@ -176,7 +176,8 @@ check("555" not in state["subs"], "/stop 삭제")
 # ---------- 암호화 저장 ----------
 alerts.save_state(TOKEN, state)
 raw = alerts.STATE_PATH.read_bytes()
-check(b"444" not in raw and "모니터".encode() not in raw, "평문 노출 없음")
+# 암호문은 base64 라 우연히 "444" 가 섞일 수 있음 → 따옴표 포함 JSON 조각으로 검사 (따옴표는 base64 에 없음)
+check(b'"444"' not in raw and "모니터".encode() not in raw, "평문 노출 없음")
 check(alerts.load_state(TOKEN) == state, "암호화 왕복")
 check(alerts.load_state("999:OTHER") == {"offset": 0, "subs": {}}, "다른 토큰으론 못 읽음")
 

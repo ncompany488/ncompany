@@ -18,6 +18,8 @@ from hotdeal.parse import (extract_price_krw, extract_shop, parse_kr_datetime,
 LIST_URL = "https://bbs.ruliweb.com/market/board/1020"
 SOURCE = SourceInfo(key="ruliweb", name="루리웹", homepage=LIST_URL, region="kr")
 
+MAX_BACKFILL_PAGES = 1000  # 1000 쪽까지 내용 있음, ~1025 쪽은 빈 페이지 (2026-11 실측: 1000 쪽은 2023-05)
+
 
 def _parse_row(tr) -> Deal | None:
     cls = tr.get("class") or []
@@ -53,18 +55,28 @@ def _parse_row(tr) -> Deal | None:
     )
 
 
+def fetch_page(page: int) -> list[Deal]:
+    """목록 N페이지(1부터) 의 딜. 페이지가 비었거나 끝이면 []."""
+    params = {"page": page} if page > 1 else None
+    r = http.get(LIST_URL, params=params, encoding="utf-8")
+    soup = BeautifulSoup(r.text, "lxml")
+    deals, seen = [], set()
+    for tr in soup.select("tr.table_body"):
+        try:
+            d = _parse_row(tr)
+        except Exception:  # 한 줄이 깨져도 계속
+            continue
+        if d and d.url not in seen:
+            seen.add(d.url)
+            deals.append(d)
+    return deals
+
+
 def fetch(limit: int = 40) -> list[Deal]:
     deals, seen = [], set()
     for page in (1, 2):
-        params = {"page": page} if page > 1 else None
-        r = http.get(LIST_URL, params=params, encoding="utf-8")
-        soup = BeautifulSoup(r.text, "lxml")
-        for tr in soup.select("tr.table_body"):
-            try:
-                d = _parse_row(tr)
-            except Exception:  # 한 줄이 깨져도 계속
-                continue
-            if d and d.url not in seen:
+        for d in fetch_page(page):
+            if d.url not in seen:
                 seen.add(d.url)
                 deals.append(d)
         if len(deals) >= limit:

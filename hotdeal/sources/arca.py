@@ -21,6 +21,8 @@ BASE = "https://arca.live"
 LIST_URL = BASE + "/b/hotdeal"
 _END_WORDS = ("종료", "품절", "마감")
 
+MAX_BACKFILL_PAGES = 100  # 100 쪽 이후는 같은 페이지를 반복해서 돌려줌 (2026-11 실측: 100 쪽은 2026-10-12)
+
 
 def _text(el) -> str:
     return el.get_text(" ", strip=True) if el else ""
@@ -37,6 +39,8 @@ def _parse_row(row) -> Deal | None:
         junk.extract()
     title = _text(a)
     if not title:
+        return None
+    if any(b.get_text(strip=True) == "광고" for b in row.select(".badge")):  # 광고 행은 모든 페이지에 끼어든다
         return None
     # 쿼리스트링(?p=1) 제거 → 정규 URL
     url = urljoin(BASE, a["href"]).split("?")[0]
@@ -78,21 +82,33 @@ def _parse_row(row) -> Deal | None:
     )
 
 
+def fetch_page(page: int) -> list[Deal]:
+    """목록 N페이지(1부터) 의 딜. 페이지가 비었거나 끝이면 []."""
+    r = http.get(LIST_URL, params={"p": page} if page > 1 else None)
+    soup = BeautifulSoup(r.text, "lxml")
+    rows = soup.select("div.list-table div.vrow.hybrid")  # 공지(a.vrow.notice)는 제외됨
+    deals: list[Deal] = []
+    seen: set[str] = set()
+    for row in rows:
+        try:
+            d = _parse_row(row)
+        except Exception:  # 깨진 행 하나가 전체를 막지 않도록
+            continue
+        if d and d.url not in seen:
+            seen.add(d.url)
+            deals.append(d)
+    return deals
+
+
 def fetch(limit: int = 40) -> list[Deal]:
     deals: list[Deal] = []
     seen: set[str] = set()
     for page in range(1, 4):  # 한 페이지 ~25개, 최대 3페이지
-        r = http.get(LIST_URL, params={"p": page} if page > 1 else None)
-        soup = BeautifulSoup(r.text, "lxml")
-        rows = soup.select("div.list-table div.vrow.hybrid")  # 공지(a.vrow.notice)는 제외됨
-        if not rows:
+        page_deals = fetch_page(page)
+        if not page_deals:
             break
-        for row in rows:
-            try:
-                d = _parse_row(row)
-            except Exception:  # 깨진 행 하나가 전체를 막지 않도록
-                continue
-            if d and d.url not in seen:
+        for d in page_deals:
+            if d.url not in seen:
                 seen.add(d.url)
                 deals.append(d)
         if len(deals) >= limit:

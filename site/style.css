@@ -1,16 +1,19 @@
 :root {
   --bg: #f6f7f9; --card: #fff; --text: #16181d; --muted: #6b7280; --line: #e5e7eb;
   --accent: #ef4444; --accent-weak: #fee2e2; --chip: #eef0f3; --ok: #16a34a; --link: #2563eb;
+  --good: #15803d; --good-weak: #dcfce7;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0f1115; --card: #181b21; --text: #e7e9ee; --muted: #9aa1ad; --line: #2a2f38;
     --accent: #f87171; --accent-weak: #3b1d1d; --chip: #242830; --ok: #4ade80; --link: #7aa7ff;
+    --good: #4ade80; --good-weak: #14301f;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0f1115; --card: #181b21; --text: #e7e9ee; --muted: #9aa1ad; --line: #2a2f38;
   --accent: #f87171; --accent-weak: #3b1d1d; --chip: #242830; --ok: #4ade80; --link: #7aa7ff;
+  --good: #4ade80; --good-weak: #14301f;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text);
@@ -58,6 +61,34 @@ select { padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); ba
 .status { list-style: none; padding: 0; }
 .status .ok { color: var(--ok); } .status .err { color: var(--accent); }
 code { background: var(--chip); padding: 0 4px; border-radius: 4px; }
+/* 역대 최저가 */
+.prow { display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: center; margin-top: 2px; font-size: 13px; color: var(--muted); }
+.punit { color: var(--text); }
+.pv { border-radius: 6px; padding: 0 6px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.pv.low { background: var(--good-weak); color: var(--good); }
+.pv.near { background: var(--chip); color: var(--good); }
+.pv.high { background: var(--chip); color: var(--muted); font-weight: 500; }
+.plow { font-size: 12px; color: var(--muted); margin-top: 2px; overflow-wrap: anywhere; }
+.plink { color: var(--link); white-space: nowrap; }
+.plink:hover { text-decoration: underline; }
+.plink.end { text-decoration: line-through; }
+.tiers { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.tiers summary { cursor: pointer; width: fit-content; }
+.tiers summary:hover { color: var(--link); }
+.tiers table { width: 100%; border-collapse: collapse; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.tiers th, .tiers td { text-align: left; padding: 2px 6px 2px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tiers th { font-weight: 500; }
+.tiers td:last-child { white-space: normal; }
+.tiers td:last-child .plink { white-space: normal; }
+.tiers tr.cur td { color: var(--text); font-weight: 600; }
+.tiers tr.cur b { font-size: 11px; color: var(--accent); }
+.tiers tr.best td { background: var(--good-weak); }
+/* 조건부 가격(카드·멤버십·신규가입 등): 작은 태그 + 흐리게 */
+.ptag { display: inline-block; font-size: 11px; line-height: 1.4; padding: 0 4px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); font-weight: 500; white-space: nowrap; }
+.plow.cond { opacity: .75; }
+.plow.cond .plink { color: var(--muted); text-decoration: underline; }
+.tiers tr.cond td { opacity: .7; font-weight: 400; }
+.pn { white-space: nowrap; color: var(--muted); }
 @media (max-width: 560px) {
   h1 { font-size: 17px; }
   .thumb { width: 52px; height: 52px; }
