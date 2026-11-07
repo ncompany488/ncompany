@@ -364,7 +364,8 @@ class History:
 
         unit = {"n": "개", "c": "개", "w": "100ml" if cur["wb"] == "ml" else "100g", "total": None}[mode]
         label = cur["label"] if mode == "n" else (info.content_unit or "개") if mode == "c" else "개"
-        out = {"key": info.key, "name": info.name, "size": info.size, "size_g": info.size_g,
+        out = {"key": info.key, "pid": pid if pid in self.products else None,   # 상품 페이지 id (기록에 있을 때만)
+               "name": info.name, "size": info.size, "size_g": info.size_g,
                "count": info.content if mode == "c" else info.count, "unit": unit, "unit_label": label,
                "unit_price": round(cur_val) if (cur_val is not None and mode != "total") else None,
                "cond": info.cond, "currency": currency, "verdict": None, "diff_pct": None, "history": None}

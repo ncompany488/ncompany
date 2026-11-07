@@ -1,0 +1,2762 @@
+[
+ {
+  "title": "Apple 아이폰 17 Pro 자급제 256gb",
+  "source": "arca",
+  "source_category": "전자제품",
+  "shop": "쿠팡",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[아웃백] 디지털 기프트카드 5만원권",
+  "source": "arca",
+  "source_category": "상품권/쿠폰",
+  "shop": "11번가",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "꽃게랑, 70g, 10개",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "쿠팡",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "유니클로 겨울준비 특별가격 11.6 ~11.12",
+  "source": "arca",
+  "source_category": "의류",
+  "shop": "유니클로",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "프링글스, 오리지날 110g 2개 + 양파맛 110g 2개 + 치즈 110g 2개 + 매운맛 110g 2개, 8개",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "토스쇼핑",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "참도깨비 횡성식 차돌 된장찌개 600g 3봉지 고기집 된장술밥",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "네이버멤버십",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "TOOCKI 알루미늄 A to C 충전케이블 2m 3개",
+  "source": "arca",
+  "source_category": "생활용품",
+  "shop": "쿠팡",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "넾다쿠폰 18시 예고",
+  "source": "arca",
+  "source_category": "기타",
+  "shop": "네멤",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "하겐다즈 파인트 3개 골라담기",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "톡딜",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "안성탕면10입 +너구리5입+짜파게티5입 (총 20봉)",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "피죤 드릴펑, 1L, 5개",
+  "source": "arca",
+  "source_category": "생활용품",
+  "shop": "쿠팡",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "청정원 저당 토마토케찹, 490g, 1개",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "쿠팡",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "벤션 CCC 45W 20000mAh 휴대용 보조 배터리, 아이폰 18 Pro Max 및 삼성 갤럭시용 고속 충전",
+  "source": "arca",
+  "source_category": "전자제품",
+  "shop": "알리",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "다얼유 A950 WING 8K 마우스 (3950,54L15)",
+  "source": "arca",
+  "source_category": "전자제품",
+  "shop": "네이버쇼핑",
+  "expected": "PC부품",
+  "set": "tuned"
+ },
+ {
+  "title": "대패삼겹살 1+1 2kg 15,500원",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "풀무원 브리지톡 탄산수 500mL 20병 6,940원",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버] 도루코 슬릭 모션 면도기 (4,000원)",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": "네이버",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[Android] Reigns 시리즈 50% 세일",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": "Android",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[스팀] Winter Memories 20% 할인",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": "스팀",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[iOS] mo.Days 일시 무료",
+  "source": "clien",
+  "source_category": "이벤트정보",
+  "shop": "iOS",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[WearOS] TVV Winter 2 Watch Face 외 일시 무료",
+  "source": "clien",
+  "source_category": "이벤트정보",
+  "shop": "WearOS",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[하이마트] 아이패드 프로 11 M5 Wi‑Fi 2TB 35% 세일",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": "하이마트",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[G마켓] 카스 올제로 2캔+제로 2캔+레몬 스퀴즈 제로 2캔 (3,000원)",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": "G마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "Dick's Sporting Goods Black Friday Sale: Up to 89% off + free shipping w/ $49",
+  "source": "dealnews",
+  "source_category": "Sports & Fitness",
+  "shop": "Dick's Sporting Goods",
+  "expected": "스포츠·레저",
+  "set": "tuned"
+ },
+ {
+  "title": "Best Buy Black Friday Unlocked Samsung Galaxy S26 Ultra Deals for From $950 + free shipping",
+  "source": "dealnews",
+  "source_category": "Android Phones",
+  "shop": "Best Buy",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "$100 in Nintendo eGift Cards for $80 + email delivery",
+  "source": "dealnews",
+  "source_category": "Gift Cards",
+  "shop": "Costco",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "TCL S55H 2.1-Channel Dolby Atmos Soundbar w/ Wireless Sub for $100 + free shipping",
+  "source": "dealnews",
+  "source_category": "Soundbars",
+  "shop": "Best Buy",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "Lowe's Early Bird Black Friday Appliance Deals: Up to 60% off",
+  "source": "dealnews",
+  "source_category": "Appliances",
+  "shop": "Lowe's",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "Polo Ralph Lauren Men's Classic-Fit Cotton Polo Shirt for $40 + free shipping",
+  "source": "dealnews",
+  "source_category": "Shirts",
+  "shop": "Macy's",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "lululemon We Made Too Much Event: Up to 84% off + free shipping",
+  "source": "dealnews",
+  "source_category": "Clothing & Accessories",
+  "shop": "lululemon",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "Cole Haan Men's Genuine Lambskin Leather Jacket for $190 + free shipping",
+  "source": "dealnews",
+  "source_category": "Coats",
+  "shop": "Macy's",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "$300 in Disney Gift Cards for $270 + delivered by email",
+  "source": "dealnews",
+  "source_category": "Gift Cards",
+  "shop": "Sam's Club",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "Samsung S84H QN65S84HAEXZA 65\" 4K HDR OLED UHD Smart TV for $900 + free shipping",
+  "source": "dealnews",
+  "source_category": "TVs",
+  "shop": "Best Buy",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "Oddire 1080p Camera Drone with 2 Batteries for $21 + free shipping w/ Prime",
+  "source": "dealnews",
+  "source_category": "Drones",
+  "shop": "Amazon",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "Best Buy Clearance Outlet Deals: Up to 95% off + free shipping",
+  "source": "dealnews",
+  "source_category": "Electronics",
+  "shop": "Best Buy",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "Simply Air Filter MERV 11 MPR 1000 6-Pack for From $30 + free shipping w/ Prime",
+  "source": "dealnews",
+  "source_category": "Air Purifiers",
+  "shop": "Woot! An Amazon Company",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "Samsung Black Friday Appliances Buy More Save More Deal: Up to $1,000 off",
+  "source": "dealnews",
+  "source_category": "Appliances",
+  "shop": "Samsung",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]백다다기오이 2kg (7,520원/무료)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "롯데온",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[톡딜]해남미소 고구마칩 45g 10봉 (10,900원/무배)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "톡딜",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[온누리쇼핑]제주은희네 해장국 밀키트 1kg 3팩 (34,500원/3,000원)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "온누리쇼핑",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[카카오]캐치웰 CX PRO 매직타워 N 자동먼지비움 무선청소기 (259,470원/무료)",
+  "source": "ppomppu",
+  "source_category": "가전/가구",
+  "shop": "카카오",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]트라이 순면티3장세트 (10,200원/무료)",
+  "source": "ppomppu",
+  "source_category": "의류/잡화",
+  "shop": "롯데온",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]핫팩 20개입 (7,700원 / 무배)",
+  "source": "ppomppu",
+  "source_category": "기타",
+  "shop": "네이버",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[옥션]네파 남여 겨울 코모도 라이트 방한화 (45,630원/무료)",
+  "source": "ppomppu",
+  "source_category": "의류/잡화",
+  "shop": "옥션",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[G마켓 Big Smile Day][GLIVE]오늘 11/6일 11시! 빅스마일데이 가전 최대혜택 LIVE! 삼성가전 TV/사운드바/공기청정기/에어컨 오직 빅스에서만 볼 수 있는 혜...",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": "G마켓 Big Smile Day",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "방탄 아미들이 좋아할 옷.",
+  "source": "ppomppu",
+  "source_category": "기타",
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]스케쳐스 여성 스텔라 부츠 4종 택1 (77,770원/무료)",
+  "source": "ppomppu",
+  "source_category": "의류/잡화",
+  "shop": "지마켓",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]고당도 달콤한 영천 샤인머스켓 2kg (6,880원/무료)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[G마켓]삼성전자 갤럭시폴드8 자급제 256GB외 종합(1,915,300원/무료)",
+  "source": "ppomppu",
+  "source_category": "디지털",
+  "shop": "G마켓",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]몽벨 모션 스텝 GRAY ML0HAUTL002 트레킹화 (106,470원/무배)",
+  "source": "ppomppu",
+  "source_category": "의류/잡화",
+  "shop": "롯데온",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[Amazon]Samsung P9 Express MicroSDXC 512GB for Nintendo-Switch 2 ($99.00 - 국내 직배 무료)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "Amazon",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[Amazon]HAPPRUN Native 1080P Bluetooth Projector - Standard ($29.99/한국까지 무료배송)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "Amazon",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[amazon]타이맥스 Q TIMEX 크로노그래프 남자메탈시계 ($172.26/한국직배송무료)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "amazon",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[애쉬포드]글라이신 수중 전투 청동 자동태엽감기 시계 (삼백칠십구불/미국내무료배송)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "애쉬포드",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[Amazon]Marshall Middleton Portable Bluetooth Speaker ($149.99 / 프라임 전용, 직배/무배)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "Amazon",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "아디다스 아디제로 SL2 러닝화 / 35.40불",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[woot]갤럭시탭 s11 스마트 북커버 화이트($9.99/아마존 프라임 무료)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "woot",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "ebay 세컨디피 Sony WH-1000XM5 Wireless Noise Canceling Headphones Black(셀러오퍼 20% + 이베이 20%) 되네요",
+  "source": "ppomppu_global",
+  "source_category": "일반",
+  "shop": null,
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[Amazon]Flir ONE Pro LT(169.19/FS)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "Amazon",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[Amazon]Thermalright Magic Qube 360 ARGB Black Liquid CPU Cooler,Building Block Fan with Temperatur...",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "Amazon",
+  "expected": "PC부품",
+  "set": "tuned"
+ },
+ {
+  "title": "[이베이]아디다스 트랙슈트 (26달러/무료)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "이베이",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[amazonjp] 오클리 남성용 선글라스 0OO9245 FROGSKINS (아시아 사이즈) (12,561엔/무배)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "amazonjp",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[휴대폰] 아이즈모바일 150GB + 5Mb 25000원 평생",
+  "source": "ruliweb",
+  "source_category": "휴대폰",
+  "shop": null,
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버페이] 마이카방문 4종 추가",
+  "source": "ruliweb",
+  "source_category": "상품권",
+  "shop": "네이버페이",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "[쿠팡] 엠앤엠즈 크런치 쿠키, 120g, 3개 (7,710원/와우무배)",
+  "source": "ruliweb",
+  "source_category": "음식",
+  "shop": "쿠팡",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[닌텐도] 옥토패스트래블러0 DL 29,900원",
+  "source": "ruliweb",
+  "source_category": "게임S/W",
+  "shop": "닌텐도",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]빼빼로 초코아몬드초코필드 합30개(30,650원/무료)",
+  "source": "ruliweb",
+  "source_category": "음식",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[반다이몰] HGUC 사이코 건담 외 재판 재입고 / 66,000원",
+  "source": "ruliweb",
+  "source_category": "취미용품",
+  "shop": "반다이몰",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버] 컬쳐랜드상품권(모바일문화상품권) 3만원(27,900원/무료)",
+  "source": "ruliweb",
+  "source_category": "상품권",
+  "shop": "네이버",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "[게임몰] PS4/NS 마법사의 밤 한정판 예약 판매 / 88,000원",
+  "source": "ruliweb",
+  "source_category": "게임S/W",
+  "shop": "게임몰",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[루트바] 팬텀 블레이드 제로 스팀키 / 50,593원",
+  "source": "ruliweb",
+  "source_category": "게임S/W",
+  "shop": "루트바",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓] LG 울트라기어 27G810A (체감가 최대 30만원대)",
+  "source": "ruliweb",
+  "source_category": "PC/가전",
+  "shop": "지마켓",
+  "expected": "PC부품",
+  "set": "tuned"
+ },
+ {
+  "title": "[11번가] 젤다의전설 시간의 오카리나 +메탈코인 (88,000원/3,0...",
+  "source": "ruliweb",
+  "source_category": "게임S/W",
+  "shop": "11번가",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓] 펩시제로+사이다제로 210ml 각 30캔 (카드24,000원/...",
+  "source": "ruliweb",
+  "source_category": "음식",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[일마존] 어고트론 LX PRO 긴 폴대 /20만",
+  "source": "ruliweb",
+  "source_category": "PC/가전",
+  "shop": "일마존",
+  "expected": "PC부품",
+  "set": "tuned"
+ },
+ {
+  "title": "iBuyPower Slate Gaming Desktop PC w/ RTX 5060 for $900 + free shipping",
+  "source": "dealnews",
+  "source_category": "Desktops",
+  "shop": "Best Buy",
+  "expected": "PC부품",
+  "set": "tuned"
+ },
+ {
+  "title": "eBay Refurbished Smartphone Deals: Up to 86% off + extra 20% off + free shipping",
+  "source": "dealnews",
+  "source_category": "Cell Phones",
+  "shop": "eBay",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]국내가공 백진미채 900g (17,960원/무료)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "롯데온",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]26년 햅쌀 옥구농협 오늘도 신동진 10kg 상등급 (27,350원/무료)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "롯데온",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]드리미안 경추베개 (32,900원 / 3,500원)",
+  "source": "ppomppu",
+  "source_category": "의류/잡화",
+  "shop": "네이버",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[Gaston Luga] Dsh Bucket Backpack [91,000원/배송비10,000원]",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": "Gaston Luga",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "워치페이스",
+  "source": "arca",
+  "source_category": "SW/게임",
+  "shop": "구글플레이",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "1206-1209 인천-요나고",
+  "source": "arca",
+  "source_category": "기타",
+  "shop": "네이버항공",
+  "expected": "여행·티켓",
+  "set": "tuned"
+ },
+ {
+  "title": "해남미소 고구마칩 45g 10봉",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "톡딜",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "Thinkcar Thinkscan Plus S7 OBD2 Diagnostic Scanner for $140 + free shipping",
+  "source": "dealnews",
+  "source_category": "",
+  "shop": "Amazon",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "Home Depot Black Friday Smart Home Deals: Up to 50% off + free shipping",
+  "source": "dealnews",
+  "source_category": "Smart Home",
+  "shop": "Home Depot",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "Fanatics Hat and Headwear Holiday Head Start Deals: Up to Extra 50% off + shipping varies",
+  "source": "dealnews",
+  "source_category": "Accessories",
+  "shop": "Fanatics",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "Dyson V10 Konical Cordless Stick Vacuum for $350 + free shipping",
+  "source": "dealnews",
+  "source_category": "Vacuum Cleaners",
+  "shop": "Amazon",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "Crocs Adult Baya Clogs for $25 + free shipping",
+  "source": "dealnews",
+  "source_category": "Shoes",
+  "shop": "eBay",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "Fanatics Holiday Head Start Promo Code: 25% to 35% off + extra 5% off clearance",
+  "source": "dealnews",
+  "source_category": "Sports Souvenirs",
+  "shop": "Fanatics",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[딜릭]한일의료기 국산 원적외선 나노카본 탄소매트 전기요 전기매트 6종 (27,900원/무료)",
+  "source": "ppomppu",
+  "source_category": "가전/가구",
+  "shop": "딜릭",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "[11번가]꿀밤고구마 5kg 왕사이즈 (10,500원/무료배송)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "11번가",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]제주 타이벡 감귤 10kg 대과 (9,990원/무료)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "롯데온",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]GAP 햅번 패딩슬리퍼 (22,000원/무료)",
+  "source": "ppomppu",
+  "source_category": "의류/잡화",
+  "shop": "롯데온",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]휠라 레이스플라인 / 볼란테 운동화 (35,290원/무료)",
+  "source": "ppomppu",
+  "source_category": "의류/잡화",
+  "shop": "지마켓",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "넾다쿠폰 자정 예고",
+  "source": "arca",
+  "source_category": "기타",
+  "shop": "네멤",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "Uplee T8 500W 26\" Electric Bike for $250 + free shipping",
+  "source": "dealnews",
+  "source_category": "Bicycling",
+  "shop": "AliExpress",
+  "expected": "스포츠·레저",
+  "set": "tuned"
+ },
+ {
+  "title": "Fanatics Jerseys Holiday Head Start Sale: Up to Extra 50% off + shipping varies",
+  "source": "dealnews",
+  "source_category": "Sports Souvenirs",
+  "shop": "Fanatics",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "lululemon Men's Coats & Jackets Specials for From $69 + free shipping",
+  "source": "dealnews",
+  "source_category": "Coats",
+  "shop": "lululemon",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]고당도 제주 감귤 소과 5kg 외 다양 (5,450원~/무료)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "롯데온",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "비비드키친 저칼로리 머스터드소스, 320g, 1개",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "쿠팡",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "노엣지피자 스위트포테이토콘 2판+코리안BBQ 2판",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "새우깡 8봉 + 매운새우깡 8봉",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "도리토스 나쵸치즈맛 과자, 172g, 6개",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "쿠팡",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "천연사이다 제로 망고 250mL X 30캔",
+  "source": "arca",
+  "source_category": "식품",
+  "shop": "오늘의집",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "올리브영 기프트카드 3/5만원권 7% 할인",
+  "source": "arca",
+  "source_category": "상품권/쿠폰",
+  "shop": "11번가",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "CIT Bank Platinum Savings Account APY Promotional Boost: Save More, Earn More",
+  "source": "dealnews",
+  "source_category": "Financial Services",
+  "shop": "CIT Bank",
+  "expected": "기타",
+  "set": "tuned"
+ },
+ {
+  "title": "Tineco Floor One i5 Stretch Lite Wet Dry Vacuum for $189 + free shipping",
+  "source": "dealnews",
+  "source_category": "",
+  "shop": "Amazon",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "Refurbished Apple Deals at eBay: Extra 20% off + free shipping",
+  "source": "dealnews",
+  "source_category": "Apple Computers",
+  "shop": "eBay",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "Petco Thanksgiving Sale: 20% off regular-price items + free same day delivery on orders $39+",
+  "source": "dealnews",
+  "source_category": "Pets",
+  "shop": "Petco",
+  "expected": "유아·반려",
+  "set": "tuned"
+ },
+ {
+  "title": "Stackable 150 lbs. Resistance Bands 5-Piece Set w/ Handles, Ankle Straps, & Door Anchor for $22 + free shipping w/ Prime",
+  "source": "dealnews",
+  "source_category": "Exercise Equipment",
+  "shop": "Amazon",
+  "expected": "스포츠·레저",
+  "set": "tuned"
+ },
+ {
+  "title": "20-Piece His and Hers Fragrance Discovery Set for $26 + free shipping w/ $39",
+  "source": "dealnews",
+  "source_category": "Fragrances",
+  "shop": "Macy's",
+  "expected": "뷰티",
+  "set": "tuned"
+ },
+ {
+  "title": "Amazon Lightning Deals: Up to 78% off + free shipping w/ Prime",
+  "source": "dealnews",
+  "source_category": "Home & Garden",
+  "shop": "Amazon",
+  "expected": "기타",
+  "set": "tuned"
+ },
+ {
+  "title": "Anthropologie Instant Gift-ification Sale: Up to 65% off + extra 50% off + free shipping w/ $50",
+  "source": "dealnews",
+  "source_category": "Clothing & Accessories",
+  "shop": "Anthropologie",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "Costco 1-Year Gold Star Membership for $65 w/ $45 Costco Shop Card + free shipping",
+  "source": "dealnews",
+  "source_category": "Home & Garden",
+  "shop": "Costco",
+  "expected": "기타",
+  "set": "tuned"
+ },
+ {
+  "title": "Topps 2026 Holiday Baseball Factory Sealed Mega Box for $30 + shipping varies",
+  "source": "dealnews",
+  "source_category": "Sports Souvenirs",
+  "shop": "Fanatics",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "Hand Massager with Heat and Compression for $38 + free shipping",
+  "source": "dealnews",
+  "source_category": "Personal Care",
+  "shop": "Amazon",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "Fit King Air Compression Leg Massager for $39 + free shipping",
+  "source": "dealnews",
+  "source_category": "Medicine & Medical",
+  "shop": "Amazon",
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "[옥션]1+1 소가죽 핀버클 벨트 10종(11,490원/무료)",
+  "source": "ppomppu",
+  "source_category": "의류/잡화",
+  "shop": "옥션",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[토스쇼핑]하늘보리 무라벨 에코, 500ml, 20개(10,900원/무배)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "토스쇼핑",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]농부의아침 쌀10kg 상등급(26,950원/무배)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[11번가]특품 영암 대봉감 10kg 중과 (18,490원/무배)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "11번가",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]식물성 멜라토닌 함유 멜라밸런스 4개월분 (18,900원/무료)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[오늘의집]아이깨끗해 핸드워시 리필 1.8L + 본품 250ml (9,984원/무료)",
+  "source": "ppomppu",
+  "source_category": "기타",
+  "shop": "오늘의집",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[오늘의집]시그니앙 오로즈 77매X10팩 75평량 물티슈 (9,124원/무료)",
+  "source": "ppomppu",
+  "source_category": "기타",
+  "shop": "오늘의집",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[G마켓]렛츠클린 물걸레청소포 대형 30매 5팩 (6,900원/무료)",
+  "source": "ppomppu",
+  "source_category": "기타",
+  "shop": "G마켓",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]제주엔 (10Brix 이상) 극조생감귤 4.5kg 로얄과 2S-M(8,750원/무료)",
+  "source": "ppomppu",
+  "source_category": "식품/건강",
+  "shop": "지마켓",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[일마존] 데스에더 v4 프로 /17만원",
+  "source": "ruliweb",
+  "source_category": "PC/가전",
+  "shop": "일마존",
+  "expected": "PC부품",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버페이] 일일적립, 클릭 40원, 라이브예고 2원",
+  "source": "ruliweb",
+  "source_category": "상품권",
+  "shop": "네이버페이",
+  "expected": "상품권·포인트",
+  "set": "tuned"
+ },
+ {
+  "title": "[Android] 넷플릭스 구독자 한정 레드 데드 리뎀션 무료",
+  "source": "clien",
+  "source_category": "이벤트정보",
+  "shop": "Android",
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버] 넾다세일 아르도 23인치 캐리어 (77,400원 / 무료)",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": "네이버",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓] 털 크록스(카드38,130원/무배)",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": "지마켓",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버] 카스 올제로 2캔+제로 2캔+레몬 스퀴즈 제로 2캔 (3,500원)",
+  "source": "clien",
+  "source_category": "상품정보",
+  "shop": "네이버",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[톡딜] 횡성식 차돌 된장찌개 600gX4팩 (18,400원/무료)",
+  "source": "dealbada",
+  "source_category": "식품/건강",
+  "shop": "톡딜",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[G마켓] 브라더 DCP-T536DW 정품 무한잉크 복합기 (205,740원/무료)",
+  "source": "dealbada",
+  "source_category": "디지털",
+  "shop": "G마켓",
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[자사몰] 빵16개 소금빵 소금식빵 버터떡 번 (38,900원/무료)",
+  "source": "dealbada",
+  "source_category": "식품/건강",
+  "shop": "자사몰",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[쿠팡] 덮개형 양방향 A4 클립보드 듀얼 커버형 서류철 (15,900원/무배)",
+  "source": "dealbada",
+  "source_category": "기타",
+  "shop": "쿠팡",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버] 용대리식 황태해장국 600g 4팩 (11,900원/네멤무배)",
+  "source": "dealbada",
+  "source_category": "식품/건강",
+  "shop": "네이버",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[KT알파몰] 밸런스업 시크릿케어 유산균 350mg 30캡슐 3박스 (24,900원/무료)",
+  "source": "dealbada",
+  "source_category": "식품/건강",
+  "shop": "KT알파몰",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온] 비타프레쉬 귤젤리 비타민C&D 3000 70구미 2통+프로폴리스 치약 2개 (15,820원/무료)",
+  "source": "dealbada",
+  "source_category": "식품/건강",
+  "shop": "롯데온",
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[11번가] 미쏘 반팔 카라 가디건 외 미쏘·로엠 가을상품 (5,190원~/무배)",
+  "source": "dealbada",
+  "source_category": "의류/잡화",
+  "shop": "11번가",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]블랙야크 여성 데일리 중량급 롱패딩 넥나인 퍼탈착형 롱다운자켓(115,800원/무배송)",
+  "source": "dealbada",
+  "source_category": "의류/잡화",
+  "shop": "지마켓",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[쿠팡] 프리메라 맨 오가니언스 2종 (30,210원/무배)",
+  "source": "dealbada",
+  "source_category": "화장품",
+  "shop": "쿠팡",
+  "expected": "뷰티",
+  "set": "tuned"
+ },
+ {
+  "title": "[코이공식몰] 솔리드 볼륨 앰플 35ml, 2개 (82,600원/무료)",
+  "source": "dealbada",
+  "source_category": "화장품",
+  "shop": "코이공식몰",
+  "expected": "뷰티",
+  "set": "tuned"
+ },
+ {
+  "title": "[11번가] 랩 탈모샴푸 1000ml 1+1 (12,660원/무료배송)",
+  "source": "dealbada",
+  "source_category": "화장품",
+  "shop": "11번가",
+  "expected": "뷰티",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓] 국산 2026년 제조 전준태대용량핫팩 150g 50매 + 중형파우치 2매 (25,950원/무료)",
+  "source": "dealbada",
+  "source_category": "의류/잡화",
+  "shop": "지마켓",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "Kobalt 46\" 9-Drawer Rolling Wood Work Bench for $398 + free shipping",
+  "source": "dealnews",
+  "source_category": "Tool Storage & Organization",
+  "shop": "Lowe's",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "Under Armour Men's UA Icon Fleece Pants for $25 + free shipping w/ $50",
+  "source": "dealnews",
+  "source_category": "Pants",
+  "shop": "Under Armour",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "Under Armour Men's UA Left Chest Lockup T-Shirt for $13 + free shipping w/ $50",
+  "source": "dealnews",
+  "source_category": "T-Shirts",
+  "shop": "Under Armour",
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "Kobalt 48V MAX 14\" Chainsaw Kit w/ 2 4.0Ah Batteries & Charger for $199 + $50 off Battery 2-Pack + free shipping",
+  "source": "dealnews",
+  "source_category": "Outdoor Power Equipment",
+  "shop": "Lowe's",
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "유니클로 커버롤 ₩34,500",
+  "source": "eomisae",
+  "source_category": "국내",
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "오라리 퓨어 실크 컴포트 플리스 집 블루종 자켓 ...",
+  "source": "eomisae",
+  "source_category": "국내",
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "스투시 백로고 니트 스웨터 7발",
+  "source": "eomisae",
+  "source_category": "국내",
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "컬럼비아 양면기모 반집업 20,160원 외",
+  "source": "eomisae",
+  "source_category": "국내",
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "몽벨 실드 선글라스 44,580원",
+  "source": "eomisae",
+  "source_category": "국내",
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "런던트래디션 마틴 더플코트",
+  "source": "eomisae",
+  "source_category": "국내",
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[SSG]닌텐도 스위치 HAD 그레이(신박스) (353,619원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]PALIT 지포스 RTX 5070 Infinity 3 D7 12GB 이엠텍(955,510원/3,000원)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "PC부품",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]엑스박스 게임패스 얼티밋 3개월 (46,500원 / 무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[옥션]꼬치의 달인 보드게임 (24,210원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]삼성갤럭시탭 S11 와이파이 256gb (농협 삼성 918,280원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버] 4:47재입고 코닥 차메라 키체인 디카 49,500원 유배",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]레이저 데스에더V4프로 게이밍마우스(246,050원/무료)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "PC부품",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]유러피안 샐러드야채 모듬쌈 로메인 상추 버터헤드 바타비아 크리스탈 1kg (4,800원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[G마켓]70년 전통의 사리원 소불고기 500g 3팩 (14,220원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[이마트안동점]브리츠 BZ-T6800 Plus 119000원",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온] 나랑드사이다 제로 345ml 뚱캔 3종 24입 (10,370원...",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[29CM]푸마 밀레니오 테크 LT (34,900원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "롯데온)아망떼 70평량 물티슈 70매 20팩 (15,050원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온] 오뚜기밥 200g 36개 (24,630원)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "오뚜기 열뿌셔뿌셔 화끈한 매운맛, 4개",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[종근당건강몰]프로메가 알티지 오메가3 듀얼 360캡슐 1박스 180일분 (76,900원/무) 역대가근처.",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[스팀]To the Moon (1,620원, 무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[29CM]모모스커피 원두 시그니처 블렌드 1kg 대용량 (35,860원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[11번가]한일 26년형 선풍기 EFe-Y11 7엽 (37,980원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "[스팀] P의 거짓 할인 (32,400원)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "국내산 대추방울토마토 2kg 1-3번과(로얄과)",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[wconcept]피코크 조선호텔 포기김치 8kg(55,900원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "애플워치 시리즈 11",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "환타 파인애플 오리지널, 350ml, 24개",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "크리넥스 3겹 울트라클린 화이트 25MX30롤 2팩",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓] 풀토래 냉장 닭가슴살 5kg(국내산) / 20560원",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]스타벅스 카페모먼트 미니컵 굿즈 세트(15입) (23,900원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[오늘의집]구운란 대란 60구(15,639원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]나일론 패티그 팬츠 (16,820원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[무신사]커버낫 RDS 2PK 후디 미드 다운 (카드83,000원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]모노카라 새치염색약 30g 2개 (3,000원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "뷰티",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온] 플레이보이 남성 드로즈 10매 (19,830원/무료)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]밀레 마르찬 기능성 반팔 카라 티셔츠 2종 (28,750원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]네파 마운틴 2L 바람막이 자켓 (61,750원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[GS샵]지담채 26년산 국내산 고춧가루 1kg 일반굵기 (24,900원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[CJONSTYLE] 갤럭시S26 울트라 512 (체감가 130만 / 무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버] PS5 P의거짓 (24,000원)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[11번가]앙블랑 물티슈 80초고평량 네이비 20팩(티멤버십+장바쿠폰) (20,100원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[sk스토아]한예지 천연펄프 화장지 클린앤소프트 플러스 3겹 30M 30롤 2팩 (19,000원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]생메밀소바 세트 냉메밀 비빔국수 (9,000원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]신선집중 돌돌이 대패삼겸살 2kg(16,570원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[종근당건강몰] 락토핏 골드 360포 (41,520원 / 무배)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버]유러피안 샐러드상추 4~5종 (5,700원/무료배송)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[토스]목우촌 주부9단 프랑크 소시지 500g 3개 (14,500원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[ssg]밀카 타블렛 오레오 12개입 (23,672원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[G마켓]유명산지 실속 경북 부사사과 소과 7kg(33-60) (13,370원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[크림]브리스 EMF 무결점 탄소매트 전기요 슈퍼싱글 SS (33,500원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "메가MGC커피 헤이즐넛아메리카노(ICED)",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "뿌셔뿌셔 바베큐맛, 90g, 15개",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[온누리]종근당건강 생유산균 락토핏 당케어 30포 3박스 (22,034원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "해태제과 오예스 콜드브루, 363g, 2개",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[오늘의집]스팬윙 무선 미니 선풍기 아이보리 (9,900원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버](NS)젤다의전설 지혜의 투영 37800원 배송비 2500원",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]메리노 안심 무자계 카본 전기요(더블) 135x180 (42,960원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버스토어]참도깨비 초량 기사식당 고추장 제육볶음 1kg (8,300원/3,500원)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[네이버] 나랑드사이다 제로 345ml x 24캔 (8,880원/무료)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓] 리챔 오리지널 200g 10캔 (19900원/무배)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[11번가]닥터페퍼 제로 350ml 24개 (T멤10,920원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]이니스프리 그린티 씨드 히알루론산 크림 50mL 2개 (19,860원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "뷰티",
+  "set": "tuned"
+ },
+ {
+  "title": "[옥션]모나리자 소프트리 미용티슈 230매 6입 2개 (유클 13,360원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "개성 왕만두 (냉동), 1.2kg, 1개",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[옥션]몽쉘 생크림 오리지널 408g 4갑 (국민/비씨 13,730원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[무신사]지오다노 베이직 레더 벨트 (13,320원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[하이마트몰]SONY 휴대용 블루투스 스피커 ULR FIELD 1 (105,650원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "tuned"
+ },
+ {
+  "title": "[롯데온]에어로쉬 런닝 5장세트 (10,990원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "코카콜라 오리지널, 350ml, 24개",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "tuned"
+ },
+ {
+  "title": "[지마켓]프로젝트엠 남여 후드 바람막이 점퍼 (22,800원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "tuned"
+ },
+ {
+  "title": "[구글무비] 극장판 진격의 거인 완결편 더 라스트 어택 소장 9,900원",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "기타",
+  "set": "tuned"
+ },
+ {
+  "title": "[29CM]글로벌나이프 G-91 워터샤프 숫돌 칼갈이 (48,570원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "tuned"
+ },
+ {
+  "title": "[카카오]더블하트 모유실감 3세대 PPSU 젖병 160ml 3개젖꼭지 3개+증정(45,900원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "유아·반려",
+  "set": "tuned"
+ },
+ {
+  "title": "[G마켓]삼성 비스포크 김치냉장고 RQ33DG71J3EW 3도어 328L (카드 1,081,800원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "holdout1"
+ },
+ {
+  "title": "[옥션]BYC 본사 1+1 남성 민소매 런닝 총 10매 (25,590원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout1"
+ },
+ {
+  "title": "[롯데온] 부르르 제로사이다 자두 250ml 30캔 (10,900원 / ...",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[소프라노] 드래곤퀘스트7 리이매진드 스위치2버전 (69,800원/2,5...",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "[G마켓]국내산 부사 사과 중대과 5kg (20,280원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[네이버]이엑스파워 충전 임팩드라이버 전동드릴 풀세트 49,000원 무배",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout1"
+ },
+ {
+  "title": "[쿠팡]풀무원 얇은피 김치만두 400gx4개 (9,980원/무료)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[쿠팡]닌키어 AMD 라데온 M6 라이젠 4300U 프로세서 미니PC (373,350원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "PC부품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[쿠팡] 삼양라면 120g 10개 (와우회원 4,930원/무료)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[네이버](NS)제노 블레이드 크로니클X 39800원 배송비 3000원",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "[토스쇼핑]수아 BLDC 스탠드 선풍기 SN-126BLDC (39,900원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "holdout1"
+ },
+ {
+  "title": "[네이버]피지 모락셀라 액체세제 2.6L 코튼 특별 대용량(네맴 선착순 13,310원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout1"
+ },
+ {
+  "title": "HP 15.6형 15-fc0751AU 라이젠 가성비 노트북",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "holdout1"
+ },
+ {
+  "title": "[11번가]활전복 1kg 9-11미 (18,900원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[G마켓]맑은물에 정성한알 동전육수 20입 X 4팩 (9,980원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[롯데온]한끼쉐이크 바나나맛 500g (10,000원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[G마켓]LG 디오스 오브제컬렉션 핏앤맥스 R984GBB012 (4,795,300원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "holdout1"
+ },
+ {
+  "title": "[팔도감]슈퍼오닝 평택 꿈마지쌀 10kg 특등급(27,750원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "닭갈비 500g 2팩",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[네이버] 하늘보리 1.5L 12개 (10,590원/무료)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[오늘의집]제스프리 골드키위 특대과 3.3kg 24과 (20,867원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[네이버]셀덕 국산 고추장오리양념불고기 2kg (400g x 5팩) (23,800원)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[카카오]고려은단 메가도스C 3000 비타민C 100포(21,300원/무료배송)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[롯데백화점]골든듀 듀이터널스 M 반지 (1,569,840원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout1"
+ },
+ {
+  "title": "[지마켓]NEPA 칸네토 트랙션 라이트 GTX 등산화 (79,950원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout1"
+ },
+ {
+  "title": "[지마켓]데체코 엑스트라버진 올리브 오일 1L 2병 + 데체코 다이스 토마토 400g(증정)(33,920원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[지마켓]아이더 필드 윈드스토퍼 다운 자켓 (158,520원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout1"
+ },
+ {
+  "title": "[스팀] Grand Theft Auto V 인핸스드 할인 (18,390원...",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "[11번가]코디 기름먹는 UKP 키친타월, 140매, 4롤, 3개 (10,040원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout1"
+ },
+ {
+  "title": "[인더마켓]명태회 무침 (17,920원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[G9인샵]필립스 피델리오 FA3 블투스피커 (199,000원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "holdout1"
+ },
+ {
+  "title": "[크리스피크림도넛] 오리지널 글레이즈드 더즌 8900/9900원 (7/2...",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[지마켓] 코카콜라 제로 490ml 24캔 20,880원 (무료)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[무신사]루모 20 24 28인치 여행용 캐리어 (57,740원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout1"
+ },
+ {
+  "title": "[롯데온]한점의 카츠 3종 SET (히레카츠,로스카츠,치킨카츠) 6팩 (23,360원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[한섬EQL]인바디 체지방 및 밸런스 측정 스마트 체중계 다이얼 H40NWi 와이파이 (414,000원/무료) 페이코 최종결제가 326,800원 이하",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout1"
+ },
+ {
+  "title": "[Hmall]한상궁김치 묵은지 2kg (6,816원/무료배송)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[오늘의집]산지직송 세척사과 2kg (8,910원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "세이코 S시리즈 전지식 쿼츠 남성 메탈 손목시계 SBTH001",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout1"
+ },
+ {
+  "title": "[지마켓]삼성전자 갤럭시 버즈4 프로 무선블루투스 이어폰 R640 (213,110원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "holdout1"
+ },
+ {
+  "title": "[지마켓]베베숲 프라임 70매 캡 20팩70gsm(21,960원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout1"
+ },
+ {
+  "title": "[patagonia] Men's Diamond Quilted Bomber Hoody ($99/FS)",
+  "source": "ppomppu_global",
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout1"
+ },
+ {
+  "title": "[쿠팡]크라운 빙수하임 말차팥빙수 142g 2개 (4,050원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[GS샵]거품 잘나는 일회용 수세미 60매 x 3롤 (10,900원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout1"
+ },
+ {
+  "title": "[카카오]넛월드 뉴 하루견과 90봉 (29,070원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[쿠팡] 한우물 차돌 짬뽕 국밥 3개 (7,790원/프레시배송)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[레일플래닛] [품절] 승차권 키링 (6000원/3500원)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "기타",
+  "set": "holdout1"
+ },
+ {
+  "title": "[G마켓]비스카 2in1 키높이 에어써큘레이터 스탠드형 (29,700원/무배)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "holdout1"
+ },
+ {
+  "title": "[토스]국내산 시나노골드 사과 소과 5kg (12,010원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[롯데온] 풀무원 생수 500ml 60병 (9,200원/무료)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[네이버](NS2)스위치2 젤다2종셋 81만원 배송비 4천원",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "[카카오]국내산 활 새우 1kg 38미 내외 (18,720원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[알리]웅진식품 생수 2L X 12병 3,356원, 커클랜드생수 4,06...",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[롯데온]국내산 활새우 1kg (16,040원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout1"
+ },
+ {
+  "title": "[쿠팡]LG전자 2026 그램 AI 15 코어 Ultra5에센스 화이트 (1,699,800원/무료)",
+  "source": "ppomppu",
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "holdout1"
+ },
+ {
+  "title": "네이버]소닉레이싱 크로스월드 스팀(체감가 31,714원)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "[그린맨게이밍] 레전드 번들 2만원",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "[스팀] DJMAX RESPECT V 할인 (9,960원)",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "[스팀] 에이스 컴뱃7 / 8,770원",
+  "source": "ruliweb",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "스위치2 파이널판타지7 리메이크 시리즈",
+  "source": "arca",
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout1"
+ },
+ {
+  "title": "[아이즈모바일]통화 : 500분, 데이터 : 20GB(7,920원/평생)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "holdout2"
+ },
+ {
+  "title": "[남도장터]국내산 왕특대 고등어 1kg 5팩 (11,830원/무료배송)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[네이버]소고기 육포 20g 간식 안주 마른안주(990원/3,000원)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[카카오]쿠쿠 인스퓨어 비데 IPX5 방수비데 CBT-R1321W (99,750원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "holdout2"
+ },
+ {
+  "title": "[오늘의집]대림바스 필터없는 초방수 자동세척 비데 DDS-S100ASIPX (154,000원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "holdout2"
+ },
+ {
+  "title": "[네이버]규조토 발매트 욕실매트 M (2,500원/네멤무배)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout2"
+ },
+ {
+  "title": "[11번가]앙블랑 아기물티슈 70고평량 세이프 베이지 캡형 72매 x 10팩 (티멤7,900원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout2"
+ },
+ {
+  "title": "[네이버]일리윤 세라마이드 아토 선로션 180ml (9,320원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "뷰티",
+  "set": "holdout2"
+ },
+ {
+  "title": "[sk스토아]푸마 바디웨어 소로나 나시 (9,900원/3만이상무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "오리온 도도한 나쵸 치즈맛, 92g, 4개",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[G마켓]슬레진저 남성 여성 초경량 헬스 워킹화 제논 358 (13,670원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "하우스 플리퍼 2",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout2"
+ },
+ {
+  "title": "[닌텐도공홈]스위치2 포코피아세트 예약구매가능떠있네요/718,000원",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout2"
+ },
+ {
+  "title": "[네이버]지오다노 폴로 반팔티(13,360원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[롯데온]1+1 르까프 자외선차단 냉감 아이스쿨 팔토시 (7,490원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[옥션] 게이머즈 9월호 14990 원 ( 6대 카드 / 무료배송 )",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout2"
+ },
+ {
+  "title": "[롯데온]카파 코튼 반팔티셔츠 3장 (10,900원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[sk스토아]코듀로이 와이드팬츠 남녀공용 2벌 (13,930원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[G마켓]칠갑농산 감자수제비 380g 4개 (10,800원/무료배송)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[무신사]플로우 크롭 긴팔 티셔츠 (11,610원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[쿠팡] 비비고 진한 김치만두 (냉동), 400g, 4개/9,980원",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[지마켓]콩쑥개떡 60g x 32개입 (13,900원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[네이버]사조오양 요리베이컨 1kg 베이컨 (멤버십 8,450원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[롯데온]마운틴벨리 기모 스판 팬츠 1+1 (18,400원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "3개월 최저가) 삼양 1963 라면 131g, 4개",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[SSG]나이키 브라질리아 트레이닝 더플백(40L/60L) (26,675원/2500원)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[sk스토아]다온 바베큐 스테이크 130g X 11개 (22,000원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[지마켓]77g 로얄플러스 물티슈 70매 캡 20팩 (17,900원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout2"
+ },
+ {
+  "title": "[카카오]국내산 26년 햇 수미감자 5kg 중사이즈 (5,120원/무배)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[11번가]강원평창수 무라벨, 2L, 12개(6,960원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[롯데온]옥구농협 예담채 십리향 10kg 상등급 (27,900원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[옥션]자이글 블룸 인덕션 겸용 티타늄 코팅 2종구성 (38,540원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "holdout2"
+ },
+ {
+  "title": "[옥션]K2 여성 구스다운 GOLDEN K95 베이글 FLEX (116,970원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[롯데온]낫소 패딩 방한화 (14,180원/무료배송)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[G마켓]RAZER 블랙샤크 V2 Pro 무선 게이밍 헤드셋 (159,000원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "디지털",
+  "set": "holdout2"
+ },
+ {
+  "title": "[지마켓]탐진강 찰진 새청무쌀 10kg 상등급 (국민29,130원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[롯데온]매일 헬로엔요 플레인 200ml 48팩 (16,350원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[우체국쇼핑]국내산 소고기 원프리미엄육포 300g (30g 10봉) (13900원/무료배송)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[G마켓]어린이 키즈 오메가3 꾸미 90구미 2병 3개월분 캐나다직수입 (23,810원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[하이마트] 닌텐도 스위치2 마카셋 678000원",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout2"
+ },
+ {
+  "title": "[네이버플러스멤버십] 아이러브베베 시그니앙75 선셋 70매 10팩 (8,500원) (무배)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout2"
+ },
+ {
+  "title": "[G마켓]헤지스 스테디셀러 로고장식 소가죽 카드지갑 (23,250원/무배)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "[오늘의집]고불소 구취케어 치약 아쿠아민트향 110g 4개+잇몸케어 치약 2개 증정 (10,500원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "생활",
+  "set": "holdout2"
+ },
+ {
+  "title": "[스팀]LEGO® Star Wars™: 스카이워커 사가 5900원",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout2"
+ },
+ {
+  "title": "기린 오후의 홍차 밀크티 500ml 8개",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[롯데온]완도활전복 1kg 6미~7미 (24,950원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[네이버] scuf omega ps5 컨트롤러(249,000원)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout2"
+ },
+ {
+  "title": "[다이렉트게임즈]용과 같이 극 & 용과 같이 극2 세트 팩 21000원",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "게임",
+  "set": "holdout2"
+ },
+ {
+  "title": "[지마켓]커클랜드 와일드플라워 허니 2.27kg 2병 (49,870원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[쿠팡] Razer Seiren V3 Mini (48,310원 부터)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "PC부품",
+  "set": "holdout2"
+ },
+ {
+  "title": "MSI MAG 275UPD E14 듀얼모드 게이밍 4K IPS 144 무결점 모니터 4K 가성비 최종혜택가26만",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "PC부품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[오늘의집]국내산 경북 샤인머스캣 맛보기 450g 내외 (6,930원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[쿠팡] 하인즈 버거소스 418g 1개 (5,580원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "피터씨마켓 가시제로 순살 가자미 700g 1봉 (6-10필렛)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[ssg]남성 나이키 페가수스 42 IB1873-107 (85176원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "패션",
+  "set": "holdout2"
+ },
+ {
+  "title": "강아지 칠면조 소힘줄 건강한 육포 220g",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "유아·반려",
+  "set": "holdout2"
+ },
+ {
+  "title": "[카카오]쿠쿠 6인용 올스텐 IH 밥솥 (229,620원/무료배송)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "가전",
+  "set": "holdout2"
+ },
+ {
+  "title": "[지마켓]백도 딱딱이 복숭아 중과 4kg (15,200원/무료)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ },
+ {
+  "title": "[카카오]BBQ 매콤달콤 닭강정 450g 3팩 (17,670원/무배)",
+  "source": null,
+  "source_category": null,
+  "shop": null,
+  "expected": "식품",
+  "set": "holdout2"
+ }
+]

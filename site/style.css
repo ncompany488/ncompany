@@ -16,6 +16,7 @@
   --good: #4ade80; --good-weak: #14301f;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: var(--bg); color: var(--text);
   font: 15px/1.5 -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
 a { color: inherit; text-decoration: none; }
@@ -103,3 +104,73 @@ code { background: var(--chip); padding: 0 4px; border-radius: 4px; }
 .about ul { margin: 4px 0; padding-left: 20px; }
 .about a { color: var(--link); text-decoration: underline; }
 .foot-links { margin-top: 8px; }
+
+/* 가격 추이 보기 링크 (메인 카드) */
+.ptrend { font-size: 12px; margin-top: 2px; }
+.ptrend a { color: var(--link); }
+.ptrend a:hover { text-decoration: underline; }
+/* 카테고리 칩 줄 (가로 스크롤) */
+.cats { display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; scrollbar-width: none; }
+.cats:empty { display: none; }
+.cat { flex: none; border: 1px solid var(--line); background: var(--card); color: var(--text); border-radius: 999px; padding: 3px 10px; font-size: 13px; cursor: pointer; }
+.cat small { color: var(--muted); margin-left: 2px; }
+.cat.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cat.on small { color: #fff; opacity: .85; }
+/* 과거 기록 검색 결과 */
+.past { margin-top: 16px; }
+.past h2 { font-size: 15px; margin: 0 0 6px; }
+.past h2 small { color: var(--muted); font-weight: 400; }
+.pastlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pastlist a { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+.pastlist a:hover .pname2 { color: var(--link); }
+.pname2 { font-weight: 600; overflow-wrap: anywhere; }
+
+/* 상품 페이지 (product.html) */
+.pd { padding-top: 16px; padding-bottom: 20px; }
+.pcard { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; min-width: 0; }
+.pcard h2 { font-size: 16px; margin: 0 0 8px; }
+.pcard h2 small { color: var(--muted); font-weight: 400; font-size: 13px; }
+.pname { font-size: 19px !important; overflow-wrap: anywhere; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 10px; }
+.stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sl { font-size: 12px; color: var(--muted); }
+.pbig { font-size: 18px; color: var(--good); overflow-wrap: anywhere; }
+.pbig2 { font-size: 16px; overflow-wrap: anywhere; }
+.psub { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.chartbox { width: 100%; min-width: 0; }
+.chart { display: block; max-width: 100%; font-size: 11px; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .tick { stroke: var(--muted); }
+.chart .ax { fill: var(--muted); }
+.chart .ln { fill: none; stroke: var(--link); stroke-width: 2; stroke-linejoin: round; }
+.chart .hit { fill: transparent; }
+.chart .dot { fill: var(--link); stroke: var(--card); stroke-width: 1.5; }
+.chart .pt.cond .dot { fill: var(--card); stroke: var(--link); stroke-width: 2; }
+.chart .pt.end { opacity: .4; }
+.chart .pt:hover .dot { stroke: var(--text); }
+.chart .lowline { stroke: var(--good); stroke-dasharray: 4 4; stroke-width: 1; }
+.chart .lowring { fill: none; stroke: var(--good); stroke-width: 2; }
+.chart .lowlab { fill: var(--good); font-weight: 700; }
+.legend { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
+.lg { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 3px 0 6px; vertical-align: -1px; }
+.lg:first-child { margin-left: 0; }
+.lg.dot { background: var(--link); }
+.lg.dot.dim { opacity: .4; }
+.lg.hollow { border: 2px solid var(--link); }
+.tscroll { overflow-x: auto; }
+.ptable { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.ptable th, .ptable td { text-align: left; padding: 4px 8px 4px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.ptable th { font-weight: 500; color: var(--muted); }
+.ptable td:last-child { white-space: normal; }
+.ptable tr.best td { background: var(--good-weak); }
+.ptable tr.cond td { opacity: .75; }
+.posts { list-style: none; margin: 0; padding: 0; }
+.post { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.post:last-child { border-bottom: 0; }
+.post.ended { opacity: .6; }
+.pdate { font-variant-numeric: tabular-nums; }
+.pp { color: var(--text); }
+.ptitle { font-size: 13px; margin-top: 2px; overflow-wrap: anywhere; }
+.ptitle .plink { white-space: normal; }
+.ptag.end { margin-left: 2px; }
+.top h1 a:hover { color: var(--link); }

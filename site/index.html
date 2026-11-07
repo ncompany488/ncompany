@@ -33,6 +33,7 @@
     <label class="chk"><input type="checkbox" id="multiOnly"> 2곳 이상만</label>
     <label class="chk"><input type="checkbox" id="lowOnly"> 역대최저만</label>
   </div>
+  <div class="wrap cats" id="cats" role="group" aria-label="카테고리"></div>
   <div class="wrap chips" id="chips"></div>
 </header>
 
@@ -41,6 +42,10 @@
   <ul id="list" class="list"></ul>
   <button id="more" class="more" hidden>더 보기</button>
   <p id="empty" class="empty" hidden>조건에 맞는 딜이 없어요.</p>
+  <section id="past" class="past" hidden>
+    <h2>과거 기록에서 찾은 상품 <small id="pastMeta"></small></h2>
+    <ul id="pastList" class="pastlist"></ul>
+  </section>
 </main>
 
 <footer class="wrap foot">

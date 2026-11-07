@@ -12,7 +12,7 @@ import traceback
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 
-from hotdeal import alerts, dedup, http, store
+from hotdeal import alerts, dedup, export, http, store
 from hotdeal.history import History
 from hotdeal.parse import KST, now_kst
 from hotdeal.sources import load_all
@@ -129,6 +129,14 @@ def main() -> None:
         with_hist = hist.annotate(groups)
         hist.save()
         print(f"가격 기록: 상품 {len(hist.products)}개, 이번 목록 중 과거 기록 있는 딜 {with_hist}개")
+        rep = export.export_site(hist, groups)  # 상품 페이지 샤드 + 과거 검색 색인 (write_site 보다 먼저)
+        print(f"상품 페이지 {rep['shards']['products']}개 ({rep['shards']['bytes'] // 1024}KB), "
+              f"검색 색인 {rep['search']['entries']}개 ({rep['search']['bytes'] // 1024}KB)")
+    except Exception:
+        traceback.print_exc()
+
+    try:  # 카테고리는 가격 기록과 무관하게 붙임
+        export.annotate_categories(groups)
     except Exception:
         traceback.print_exc()
 

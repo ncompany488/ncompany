@@ -17,6 +17,7 @@
     multiOnly: store.get("multiOnly", false),
     lowOnly: store.get("lowOnly", false),
     off: new Set(store.get("off", [])),   // 숨긴 소스
+    cat: (() => { const c = store.get("cat", "all"); return typeof c === "string" && c ? c : "all"; })(), // 카테고리 ("all" = 전체)
     shown: PAGE,
   };
 
@@ -142,7 +143,29 @@
       low: (a, b) => lowRank(a) - lowRank(b) || lowDiff(a) - lowDiff(b) || ts(b) - ts(a),
     }[state.sort];
     if (state.sort === "cheap") list = list.filter((g) => g.currency === "KRW" || state.region === "global");
+    // 카테고리 칩의 개수는 카테고리를 뺀 나머지 조건(탭·소스·검색 등)으로 걸러진 목록 기준
+    state.catCount = countCats(list);
+    if (state.cat !== "all") list = list.filter((g) => catOf(g) === state.cat);
     return list.sort(by);
+  }
+
+  // ---------- 카테고리 ----------
+  const CATS = ["식품", "생활", "가전", "디지털", "PC부품", "게임", "패션", "뷰티", "유아·반려", "스포츠·레저", "여행·티켓", "상품권·포인트", "기타"];
+  const catOf = (g) => (typeof g.category === "string" && g.category.trim() ? g.category.trim().slice(0, 20) : "기타");
+  function countCats(list) {
+    const m = new Map();
+    for (const g of list) { const c = catOf(g); m.set(c, (m.get(c) || 0) + 1); }
+    return m;
+  }
+  function renderCats(total) {
+    const m = state.catCount || new Map();
+    // 정해진 순서대로, 목록에 없는 이름(예상 밖 값)은 뒤에. 고른 카테고리는 0개여도 보여서 해제할 수 있게
+    const names = [...CATS.filter((c) => m.has(c)), ...[...m.keys()].filter((c) => !CATS.includes(c)).sort()];
+    if (state.cat !== "all" && !names.includes(state.cat)) names.push(state.cat);
+    // 카테고리 정보가 전혀 없으면(전부 '기타') 줄을 숨김
+    if (!names.length || (names.length === 1 && names[0] === "기타" && state.cat === "all")) { $("#cats").innerHTML = ""; return; }
+    const chip = (v, label, n) => `<button class="cat${state.cat === v ? " on" : ""}" data-c="${esc(v)}" aria-pressed="${state.cat === v}">${esc(label)}<small>${num(n)}</small></button>`;
+    $("#cats").innerHTML = chip("all", "전체", total) + names.map((c) => chip(c, c, m.get(c) || 0)).join("");
   }
 
   // 역대최저 대비 싼 순: 역대최저 → 근접(차이 작은 순) → 비쌈(차이 작은 순) → 첫 기록 → 정보 없음
@@ -246,6 +269,13 @@
     return out;
   }
 
+  // 가격 기록이 있는 상품이면 상품 페이지 링크
+  const trendLink = (g) => {
+    const pid = g.product && typeof g.product === "object" ? g.product.pid : null;
+    return typeof pid === "string" && pid && pid.length <= 300
+      ? `<div class="ptrend"><a href="product.html?id=${esc(encodeURIComponent(pid))}">📈 가격 추이 보기</a></div>` : "";
+  };
+
   function card(g, meta) {
     const main = g.sources[0];
     const srcs = g.sources.map((s) =>
@@ -263,7 +293,7 @@
         ${g.ended ? `<span class="badge-end">종료</span>` : ""}
         <span>${ago(g.posted_at || g.first_seen)}</span>
       </div>
-      ${lowest(g, meta)}
+      ${lowest(g, meta)}${trendLink(g)}
       <div class="srcs">${srcs}</div>
     </div></li>`;
   }
@@ -272,11 +302,48 @@
     if (!state.data) return;
     const meta = srcMeta();
     const list = filtered();
+    renderCats([...(state.catCount || new Map()).values()].reduce((a, b) => a + b, 0));
+    renderPast();
     $("#list").innerHTML = list.slice(0, state.shown).map((g) => card(g, meta)).join("");
     $("#more").hidden = list.length <= state.shown;
     $("#empty").hidden = list.length > 0;
     const up = ago(state.data.updated_at);
     $("#meta").textContent = `${list.length.toLocaleString()}개 딜` + (up ? ` · ${up} 업데이트` : "");
+  }
+
+  // ---------- 과거 기록 검색 (data/search.json, 2글자 이상일 때 처음 한 번만 불러옴) ----------
+  let searchIdx = null, searchLoading = null;
+  function loadSearch() {
+    if (searchIdx || searchLoading) return;
+    searchLoading = fetch("data/search.json")
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then((a) => {
+        searchIdx = (Array.isArray(a) ? a : []).filter((x) => x && typeof x.id === "string" && x.id && typeof x.n === "string")
+          .map((x) => ({ ...x, _h: x.n.toLowerCase(), _ns: x.n.toLowerCase().replace(/\s+/g, "") }));
+        renderPast();
+      })
+      .catch(() => { searchIdx = []; }); // 실패하면 조용히 섹션을 안 보여줌
+  }
+  function renderPast() {
+    const q = state.q.toLowerCase();
+    const box = $("#past");
+    if (q.replace(/\s+/g, "").length < 2) { box.hidden = true; return; }
+    if (!searchIdx) { box.hidden = true; loadSearch(); return; }
+    const words = q.split(/\s+/).filter(Boolean), qns = q.replace(/\s+/g, "");
+    const hits = [];
+    for (const x of searchIdx) {
+      if (words.every((w) => x._h.includes(w) || x._ns.includes(w)) || x._ns.includes(qns)) { hits.push(x); if (hits.length >= 20) break; }
+    }
+    box.hidden = !hits.length;
+    if (!hits.length) return;
+    $("#pastMeta").textContent = hits.length >= 20 ? "(앞 20개)" : `(${hits.length}개)`;
+    $("#pastList").innerHTML = hits.map((x) => {
+      const b = x.b === "100g" || x.b === "100ml" ? x.b : x.b ? (typeof x.ul === "string" && x.ul.trim() && x.ul.trim().length <= 6 ? x.ul.trim() : "개") : null;
+      const lu = b && Number.isFinite(x.lu) ? `${b}당 ${x.lu < 100 && Math.round(x.lu) !== x.lu ? x.lu.toLocaleString("ko-KR", { maximumFractionDigits: 1 }) + "원" : won(x.lu)}` : "";
+      const lp = Number.isFinite(x.lp) ? won(x.lp) : "";
+      const low = [lu, lp && lu ? `(${lp})` : lp].filter(Boolean).join(" ");
+      return `<li><a href="product.html?id=${esc(encodeURIComponent(x.id))}"><div class="pname2">${esc(x.n)}</div><div class="prow">${x.cat ? `<span class="shop">${esc(x.cat)}</span>` : ""}${low ? `<span>역대 최저 <span class="punit">${esc(low)}</span></span>` : ""}${md(x.ld) ? `<span>${esc(md(x.ld))}</span>` : ""}${Number.isFinite(x.k) && x.k > 0 ? `<span class="pn">기록 ${num(Math.floor(x.k))}건</span>` : ""}</div></a></li>`;
+    }).join("");
   }
 
   function renderChips() {
@@ -326,6 +393,12 @@
     state.off.has(k) ? state.off.delete(k) : state.off.add(k);
     store.set("off", [...state.off]);
     renderChips(); render();
+  };
+  $("#cats").onclick = (e) => {
+    const c = e.target.closest?.("[data-c]")?.dataset.c;
+    if (!c) return;
+    state.cat = c === state.cat ? "all" : c; store.set("cat", state.cat); state.shown = PAGE;
+    render();
   };
   $("#more").onclick = () => { state.shown += PAGE; render(); };
 
