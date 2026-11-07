@@ -76,9 +76,10 @@ def backfill(pages: int) -> None:
             if newest and newest < keep_cutoff:
                 print(f"  {mod.SOURCE.key}: {page}페이지에서 보관 기간 이전 도달 → 중단", flush=True)
                 break
-                if page % 50 == 0:
+            if page % 50 == 0:
+                with lock:
                     hist.save()  # 중간 저장 (중단돼도 진행분 유지)
-                    print(f"  {mod.SOURCE.key}: {page}/{n_pages}페이지, 기록 {got}건", flush=True)
+                print(f"  {mod.SOURCE.key}: {page}/{n_pages}페이지, 기록 {got}건", flush=True)
         return f"{mod.SOURCE.key}: 기록 {got}건"
 
     only = None

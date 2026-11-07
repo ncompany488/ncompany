@@ -14,6 +14,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write   # tools/health.py 가 고장 이슈를 열고 닫음
 
 concurrency:
   group: collect
@@ -35,6 +36,20 @@ jobs:
           cache: pip
 
       - run: pip install -r requirements.txt
+
+      # 배포 전 점검: 실패하면 여기서 작업을 멈춤 → 아래 수집·data 브랜치 저장·배포가 모두 건너뛰어져
+      # 이전 사이트와 누적 데이터는 그대로 남고, 다음 15분 실행(또는 고친 코드 푸시)에서 다시 시도함
+      - name: 배포 전 점검 (tools/check.py)
+        id: check
+        timeout-minutes: 5
+        run: python tools/check.py
+
+      - name: 점검 실패 이슈 열기
+        if: failure() && steps.check.outcome == 'failure'
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python tools/health.py --check-failed
 
       - name: 이전 누적 데이터 가져오기
         run: |
@@ -58,6 +73,15 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         run: python collect.py
+
+      # 소스별 연속 실패·0개 횟수를 data/health.json 에 기록 → 기준 넘으면 GitHub 이슈 (회복되면 닫힘)
+      # 모니터링이 고장나도 데이터 저장·배포는 계속되도록 continue-on-error
+      - name: 고장 감지 (tools/health.py)
+        continue-on-error: true
+        timeout-minutes: 3
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python tools/health.py
 
       - name: 누적 데이터 저장 (data 브랜치)
         run: |

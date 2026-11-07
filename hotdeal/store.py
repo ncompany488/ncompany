@@ -66,6 +66,10 @@ def merge(store: dict, fresh: list[dict]) -> list[str]:
             for k, v in old.items():
                 if d.get(k) is None and v is not None:
                     d[k] = v
+        # 날짜만 있는 게시판(딜바다·어미새 등)은 0시로 들어와 정렬이 밀림 → 처음 본 날과 같으면 처음 본 시각으로
+        pa = d.get("posted_at") or ""
+        if pa.endswith("T00:00:00+09:00") and pa[:10] == (d.get("first_seen") or "")[:10]:
+            d["posted_at"] = d["first_seen"]
         d["last_seen"] = now
         deals[d["id"]] = d
     return new_ids

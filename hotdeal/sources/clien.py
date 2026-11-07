@@ -1,7 +1,7 @@
 """클리앙 알뜰구매 게시판 수집기 (HTML 목록 파싱).
 
-- RSS 는 없음(404). robots.txt 가 쿼리스트링(/*?*)을 막으므로 ?page= 같은 파라미터 없이
-  첫 페이지(약 30건)만 가져온다.
+- RSS 는 없음(404). robots.txt 의 `Allow: /service/board/` 가 더 길어서(최장 일치)
+  `Disallow: /*?*` 를 덮어쓰므로 ?po=N (0부터) 페이징 가능 (http.allowed 로 확인함).
 - 목록의 정렬/분류 쿼리(?od=...)는 잘라서 canonical URL 로 만든다.
 """
 from __future__ import annotations
@@ -17,6 +17,7 @@ from ..parse import extract_price_krw, extract_shop, parse_kr_datetime, to_int
 SOURCE = SourceInfo(key="clien", name="클리앙", region="kr", kind="community",
                     homepage="https://www.clien.net/service/board/jirum")
 ENABLED = True
+MAX_BACKFILL_PAGES = 100  # 상한 추정; 실제 깊이는 백필 시 확인 필요
 
 BASE = "https://www.clien.net"
 LIST_URL = BASE + "/service/board/jirum"
@@ -71,10 +72,13 @@ def _parse_row(row) -> Deal | None:
     )
 
 
-def fetch(limit: int = 40) -> list[Deal]:
-    html = http.get(LIST_URL).text
+def fetch_page(page: int) -> list[Deal]:
+    """목록 N페이지(1부터). robots.txt 의 Allow:/service/board/ (더 긴 규칙)가 /*?* 금지를 덮어써 ?po= 허용."""
+    params = {"po": page - 1} if page > 1 else None
+    html = http.get(LIST_URL, params=params).text
     soup = BeautifulSoup(html, "lxml")
     deals: list[Deal] = []
+    seen: set[str] = set()
     # data-role="list-row" 인 것만 실제 글 (공지·상단 고정·광고 행 제외)
     for row in soup.select("div.list_item[data-role=list-row]"):
         if "notice" in (row.get("class") or []):
@@ -83,8 +87,21 @@ def fetch(limit: int = 40) -> list[Deal]:
             d = _parse_row(row)
         except Exception:  # 한 줄이 깨져도 전체는 계속
             continue
-        if d:
+        if d and d.url not in seen:
+            seen.add(d.url)
             deals.append(d)
+    return deals
+
+
+def fetch(limit: int = 40) -> list[Deal]:
+    deals: list[Deal] = []
+    seen: set[str] = set()
+    # 알뜰구매 게시판은 2페이지부터 10일 이상 지난 글이라 평소 수집은 1페이지만 (2페이지~는 백필용)
+    for page in (1,):
+        for d in fetch_page(page):
+            if d.url not in seen:
+                seen.add(d.url)
+                deals.append(d)
         if len(deals) >= limit:
             break
-    return deals
+    return deals[:limit]
