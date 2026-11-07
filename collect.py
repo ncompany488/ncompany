@@ -31,12 +31,17 @@ def fetch_one(mod):
         return mod, [], f"{type(e).__name__}: {e}"[:300], time.time() - t0
 
 
+def _global_sources(mods) -> set[str]:
+    """해외 사이트 키 목록 → 가격 기록에서 국내 상품과 섞지 않음."""
+    return {m.SOURCE.key for m in mods if m.SOURCE.region == "global"}
+
+
 def backfill(pages: int) -> None:
     """과거 목록 페이지를 훑어 가격 기록만 채운다 (화면 목록·알림에는 넣지 않음).
     사이트별로 동시에 돌리고, 같은 사이트 안의 간격은 http.get 이 지킨다."""
     import threading
     from hotdeal.history import KEEP_DAYS
-    hist = History.load()
+    hist = History.load(global_sources=_global_sources(load_all()))
     lock = threading.Lock()
     keep_cutoff = (now_kst() - timedelta(days=KEEP_DAYS)).isoformat()
 
@@ -118,7 +123,7 @@ def main() -> None:
 
     # 상품별 가격 기록 → 역대 최저가
     try:  # 가격 기록이 실패해도 목록 저장·배포는 계속
-        hist = History.load()
+        hist = History.load(global_sources=_global_sources(mods))
         hist.observe(st["deals"].values())
         with_hist = hist.annotate(groups)
         hist.save()

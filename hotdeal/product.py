@@ -31,7 +31,7 @@ import re
 from dataclasses import dataclass
 from typing import Optional
 
-PARSER_VERSION = 3  # 키 규칙이 바뀌면 올린다 → History.load 가 모든 기록을 다시 분류
+PARSER_VERSION = 4  # 키 규칙이 바뀌면 올린다 → History.load 가 모든 기록을 다시 분류
 
 # ---------- 비교 대상이 아닌 글 ----------
 _SKIP = re.compile(
@@ -41,7 +41,11 @@ _SKIP = re.compile(
     r"예고|안내|추천|후기|질문|아시는\s*분|세일|패키지|숙박|항공|티켓|입장권|왕복|편도|직항|경유|노선|"
     r"\b외\b|\s외\s|\s외$|중\s*택|"
     r"라방|랜덤\s*\d|클릭\s*적립|일일\s*적립|적립\s*\d|알림\s*(?:받기|신청)|팔로우|출석|(?<![가-힣])퀴즈|만보기|"
-    r"\d+\s*원\s*딜|판매\s*예정|출시\s*예정|발매\s*예정|인하\s*예정|예약\s*(?:시작|오픈|예정|안내)",
+    r"\d+\s*원\s*딜|판매\s*예정|출시\s*예정|발매\s*예정|인하\s*예정|예약\s*(?:시작|오픈|예정|안내)|"
+    # F-001 여러 상품 나열 신호: '(다양/무료)', '상품별상이', '1,683,300원~' (가격 범위 = 여러 옵션)
+    r"[(\[]\s*다양\s*/|상품별\s*상이|\d\s*원\s*~(?!\s*\d)|"
+    # C-1-5 네이버페이 N원 적립 (현장결제·이벤트 적립)
+    r"(?:네이버\s*페이|네페)[^()]{0,40}?\d[\d,]*\s*원?\s*적립",
     re.I,
 )
 # 포인트 적립 게시판성 말머리 → 통째로 제외
@@ -60,14 +64,15 @@ _COND = re.compile(
     r"스마일|토스|카카오|네이버)\s*(?:페이\s*)?(?:신용|체크)?\s*카드|카드\s*\d+\s*%|체감|"
     r"멤버십|맴버쉽|멤버쉽|네멤(?!\s*무)|티멤|와우(?!\s*무)|외우(?!\s*무)|유니버스|유클(?!\s*무)|스마일\s*클럽|"
     r"신규|첫\s*구매|첫\s*주문|미\s*구매|재구매\s*제외|쿠폰\s*(?:필수|적용|사용|다운)|앱\s*(?:전용|결제|구매)|"
-    r"페이코|토스\s*페이|월렛|네이버\s*페이\s*(?:결제|구매)|등급|임직원|학생\s*인증|"
+    r"페이코|토스\s*페이|월렛|네이버\s*페이\s*(?:결제|구매)|(?:회원|vip|멤버십?|고객|구매)\s*등급|등급\s*(?:할인|쿠폰|혜택|별|회원)|임직원|학생\s*인증|"
     # 검증에서 놓친 표기: T멤, 토스 15,450원, 스카 15,990원(스마일카드), 특정 결제수단, 모니모, 빅스 10%
-    r"t\s*멤(?!\s*무)|토스\s*[\d,]+\s*원|스카\s*[\d,]+|특정\s*결제|모니모|빅스\s*\d+\s*%",
+    r"t\s*멤(?!\s*무)|토스\s*[\d,]+\s*원|스카\s*[\d,]+|특정\s*결제|모니모|빅스\s*\d+\s*%|"
+    r"u\s*클럽|카할가|카드\s*할인가",
     re.I,
 )
 
 # ---------- 제목 정리 ----------
-_LEAD_TAG = re.compile(r"^\s*([\[【(]([^\]】)]{0,30})[\]】)])\s*")
+_LEAD_TAG = re.compile(r"^\s*([\[【(<]([^\]】)>]{0,30})[\]】)>])\s*")
 _LEAD_PAREN_TAG = re.compile(r"^\s*([^\s()\[\]]{1,8})\)\s*")       # gs25) 티) 10시)
 # 판매처(쇼핑몰·스토어) 말머리 → 지움. 그 외(브랜드·매장: [메가MGC커피] [스타벅스])는 이름에 남김
 _SHOPS = {
@@ -87,6 +92,10 @@ _SHOPS = {
     "갤럭시 스토어", "갤럭시스토어", "리디북스", "요기요", "배민", "쿠팡이츠", "페이코", "카카오페이", "티플러스",
     "아이즈모바일", "시월모바일", "인더마켓", "레일플래닛", "블리자드샵", "탁탁몰", "일렉트로마트", "딜릭", "루트바",
     "우리동네gs", "우리동네gs앱", "미니맵", "토이저러스", "kkst", "ts공식몰", "레디홈",
+    # R2 C-1-9: 말머리 변형
+    "쿠팡 로켓직구", "쿠팡로켓", "쿠팡로켓직구", "쿠팡 로켓", "쿠팡 로켓프레시", "로켓배송", "로켓와우", "29cm", "temu",
+    "위시", "wish", "lotte on", "lotteon", "전자랜드", "kream", "팔도감", "공식", "공식홈", "공식수입사", "공식인증점",
+    "끌올", "재업", "다이렉트게임즈", "그립",
     "품절", "종료", "예판", "예약", "재입고", "특가", "핫딜", "임박특가", "판매중", "전기종", "매장", "국내", "해외",
     "직구", "기타", "공구", "단독", "한정", "티", "지", "삼", "옥", "쿠", "네", "11", "ns", "gs",
 }
@@ -95,8 +104,8 @@ _CATEGORIES = {"pc", "가전", "식품", "생활", "게임", "의류", "패션",
 _SHOP_PAT = re.compile(r"(?:몰|샵|숍|스토어|마켓|쇼핑|마트|닷컴|store|shop|mall|마존|홈쇼핑|백화점|\d+시)$", re.I)
 
 _PAREN = re.compile(r"[\[(（【]([^\[\](（）)【】]*)[\])）】]")
-_PRICE_TXT = re.compile(r"\d{1,3}(?:,\d{3})+\s*원?~?|\d+\s*원~?|\d+(?:\.\d+)?\s*만\s*원?|\$\s*\d+(?:\.\d+)?|\d+(?:\.\d+)?\s*\$")
-_PRICEISH_PAREN = re.compile(r"원|무료|무배|배송|/|구매|발송|증정|택|당\s*\d|랜덤|카드|멤버|네멤|와우|유클|체감|쿠폰|일분|\d+\s*일\s*분", re.I)
+_PRICE_TXT = re.compile(r"\$\s*\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d{1,3}(?:,\d{3})+\s*원?~?|\d+\s*원~?|\d+(?:\.\d+)?\s*만\s*원?|\$\s*\d+(?:\.\d+)?|\d+(?:\.\d+)?\s*\$")
+_PRICEISH_PAREN = re.compile(r"원|무료|무배|배송|/|구매|발송|증정|택|당\s*\d|랜덤|카드|멤버|네멤|와우|유클|체감|쿠폰|일분|\d+\s*일\s*분|개월\s*분", re.I)
 _FREEBIE = re.compile(r"\+\s*[^+]*?(?:증정|사은품|서비스|덤)\)?", re.I)
 _PROMO = re.compile(
     r"무료\s*배송|무배|무료|특가|핫딜|초특가|역대가|최저가|역대급|체감가?\s*[\d.]*\s*만?|카드\s*할인|카드\s*다양|할인|적립|"
@@ -106,11 +115,19 @@ _PROMO = re.compile(
     r"스마일\s*클럽|톡딜|대용량|멀티팩|본품|기획|신상|new|자급제|직수입|"
     r"예약\s*판매|예약\s*구매|사전\s*예약|예약|예판|재입고|재판매|품절|종료|매장\s*방문|단품|종류\s*무관|"
     r"네이버\s*페이|카카오\s*페이|토스\s*페이|\S*결제\s*시|신규|첫\s*구매|미\s*구매|배송비|배송료|택배비|유배|조건부|"
-    r"\d{2,4}\s*년\s*산?|\S*당\s*\d+(?:\.\d+)?\s*[a-z가-힣]*|_?\d{1,2}/\d{1,2}\s*\d*\s*차|\d+\s*차\b",
+    r"\d{2,4}\s*년\s*산?|\S*당\s*\d+(?:\.\d+)?\s*[a-z가-힣]*|_?\d{1,2}/\d{1,2}\s*\d*\s*차|\d+\s*차\b|"
+    # R2 C-1-9 잔여어: 끌올·재업·정가·카할가·쿠폰 조건·공식(몰/스토어)·N개월분
+    r"끌올|재업|(?<![가-힣])정가(?![가-힣])|카할가|카드\s*할인가|u\s*클럽\s*전용|u\s*클럽|\S*쿠폰\s*적용\s*시?|쿠폰\s*적용가|"
+    r"적용\s*시|적용가|(?<![가-힣])공식(?:인증점|스토어|몰|홈|수입사|판매처|대리점)?(?![가-힣])|총?\s*\d+\s*개월\s*분",
     re.I,
 )
 _STOP_TOKENS = {"x", "×", "*", "or", "등", "및", "외", "토스", "페이코", "kb", "카드", "가격", "딜", "구매", "판매", "중",
-                "개당", "할인가", "최종", "특전포함", "can", "ea", "pet", "페트", "box", "캔", "병", "봉"}
+                "개당", "할인가", "최종", "특전포함", "can", "ea", "pet", "페트", "box", "캔", "병", "봉",
+                # R2: 잔여어 (판매처 이름이 본문에 섞인 경우 포함)
+                "박스", "한박스", "29cm", "내외", "내", "이내", "다양", "쿠팡", "지마켓", "g마켓", "11번가", "옥션", "롯데온",
+                "ssg", "컬리", "테무", "temu", "알리", "위시", "추가", "맛선택", "묶음", "이상", "네맴", "넾다", "당일도정",
+                # F-003 영어 불용어
+                "for", "with", "the", "and", "of", "by"}
 # 이름에서 빼도 상품이 같은 '제조사' (이름이 일반명사뿐이면 남김: '오뚜기 피자' ≠ '피자')
 # PB·상품 라인(곰곰·비비고·노브랜드·피코크…)과 원재료 업체(동원·사조·하림·풀무원)는 상품을 가르므로 넣지 않음
 _BRANDS = {
@@ -129,7 +146,8 @@ _GENERIC = {
 _SYNONYM = {"오리지널": "오리지날", "컵라면": "컵", "봉지라면": "", "사발면": "사발", "툼바": "투움바",
             "제로슈거": "제로", "제로슈가": "제로", "zero": "제로", "프로": "pro", "울트라": "ultra", "맥스": "max",
             "아이스": "iced", "ice": "iced", "핫": "hot", "닌텐도스위치": "스위치", "switch": "스위치",
-            "플레이스테이션5": "ps5", "플스5": "ps5", "엑스박스": "xbox", "리터": "l"}
+            "플레이스테이션5": "ps5", "플스5": "ps5", "엑스박스": "xbox", "리터": "l",
+            "제주삼다수": "삼다수", "메가mgc커피": "메가커피", "refurbished": "refurb"}
 _PLATFORM = r"ps[45]|ns[12]?|nsw|스위치2?|xbox|xsx|pc|스팀|1|2"
 
 # ---------- 수량·용량 ----------
@@ -145,17 +163,29 @@ _NB = r"(?<![a-z\d.,~\-])"                                       # 앞이 영문
 
 _PLUS_N = re.compile(rf"(?<![\d+])(\d{{1,2}})\s*\+\s*(\d{{1,2}})(?![\d+])(?:\s*({_PACK_UNITS})(?![a-z가-힣]))?", re.I)
 _SAME_PLUS = re.compile(rf"(\d+(?:\.\d+)?)\s*({_SIZE_UNITS})\s*\+\s*\1\s*\2(?:\s*\+\s*\1\s*\2)*(?![a-z])", re.I)
-_TOTAL = re.compile(rf"총\s*(\d+)\s*({_PACK_UNITS}|{_CONTENT_UNITS})(?![a-z])", re.I)
+_TOTAL = re.compile(rf"총\s*(\d+)\s*({_PACK_UNITS}|{_CONTENT_UNITS})(?![a-z]|월)", re.I)   # '총 2개월분' 은 개수 아님
 _TOTAL_SIZE = re.compile(rf"총\s*(\d+(?:\.\d+)?)\s*({_SIZE_UNITS})(?![a-z])", re.I)
 _MUL = re.compile(
-    rf"(?<![\d.])(\d+(?:\.\d+)?)\s*({_SIZE_UNITS}|{_CONTENT_UNITS}|{_PACK_UNITS})?\s*[x×*]\s*(\d+)\s*({_PACK_UNITS}|{_CONTENT_UNITS})?(?![a-z\d])",
+    # 앞이 영문자면 모델명 (272F900 X24 의 900 X24 는 곱셈 아님)
+    rf"(?<![\d.a-z])(\d+(?:\.\d+)?)\s*({_SIZE_UNITS}|{_CONTENT_UNITS}|{_PACK_UNITS})?\s*[x×*]\s*(\d+)\s*({_PACK_UNITS}|{_CONTENT_UNITS})?(?![a-z\d])",
     re.I,
 )
-_MUL_BARE = re.compile(rf"(?:^|\s)[x×*]\s*(\d+)\s*({_PACK_UNITS}|{_CONTENT_UNITS})?(?![a-z\d])", re.I)
+_MUL_BARE = re.compile(rf"(?:^|\s)[x×*](\s*)(\d+)\s*({_PACK_UNITS}|{_CONTENT_UNITS})?(?![a-z\d])", re.I)
 _COUNT = re.compile(rf"{_NB}(\d+)\s*({_PACK_UNITS})(?![a-z가-힣])", re.I)
 _CONTENT = re.compile(rf"{_NB}(\d+)\s*({_CONTENT_UNITS})(?![a-z가-힣])", re.I)
-_SIZE = re.compile(rf"(?<![\d.,])(\d+(?:\.\d+)?)\s*({_SIZE_UNITS})(?![a-z])", re.I)
-_RANGE = re.compile(r"\d+\s*[-~]\s*\d+\s*[가-힣a-z]*", re.I)                        # 8-10과, 4-5미
+# 앞이 영문자면 모델명 (MP273L·OLED65G6·LS32FG500 의 273L·65G 는 용량 아님). 'x3kg' 의 x 는 곱셈이라 허용
+_SIZE = re.compile(rf"(?<![\d.,a-wyz])(\d+(?:\.\d+)?)\s*({_SIZE_UNITS})(?![a-z])", re.I)
+_RANGE = re.compile(r"(?<![a-z\d])\d+\s*[-~]\s*\d+\s*[가-힣a-z]*", re.I)            # 3~4인분 (등급 범위는 _GRADE 로 먼저 보존)
+# 수산·과일 크기 등급 '9~10미'·'11-12과'·'6미~7미' → '9_10미' 토큰으로 키에 남김 (~ 와 - 는 같게)
+_GRADE = re.compile(r"(?<![\d.])(\d{1,3})\s*(?:미|과|수)?\s*[-~]\s*(\d{1,3})\s*(미|번과|과|수)(?:(?![가-힣a-z])|(?=내외|이내|내))", re.I)
+# 하이픈 모델번호 (HV9272-001, E14-700, DDR5-5200, LTP-V007L-7B1DF): 영문자+숫자 조각이 있으면 하이픈을 지우고 한 토큰으로
+_HYPHEN_MODEL = re.compile(r"(?<![a-z\d])[a-z\d]+(?:-[a-z\d]+)+(?![a-z\d])", re.I)
+# 크기 '40x60'·'65X50'·'1,800x800' (단위 없는 두 수가 모두 20 이상) → 개수 아님, '40_x_60' 토큰으로 보존
+_DIMS = re.compile(r"(?<![\d.,a-z])(\d{1,3}(?:,\d{3})+|\d{2,4})\s*[x×*]\s*(\d{1,3}(?:,\d{3})+|\d{2,4})(?![\d,.]|\s*(?:mm|cm|m)?\s*(?:개|입|팩|봉|캔|병|ea|p|매|롤|포|정|캡슐|구|g|ml|kg|l|can|박스|통|세트|장|t)(?![a-z]))", re.I)
+_GLUED_COUNT = re.compile(rf"(\d(?:\.\d+)?(?:kg|g|ml|l))(?=\d+\s*(?:{_PACK_UNITS})(?![a-z가-힣]))", re.I)   # '2L30병' → '2L 30병'
+# 함께 묶어 파는 일이 드문 개별 라면 이름: 2개 이상 나오면 여러 상품 나열 (신라면 너구리 짜파게티)
+_RAMEN = ("신라면", "너구리", "짜파게티", "안성탕면", "새우탕", "육개장사발면", "삼양라면", "진라면", "열라면", "짜왕",
+          "사리곰탕", "무파마", "오징어짬뽕", "비빔면", "불닭볶음면")
 _EGG = re.compile(r"란|계란|달걀|egg", re.I)
 _RESOLUTION = {"720", "1080", "1440", "2160", "4320"}
 
@@ -282,19 +312,115 @@ def _strip_lead(t: str) -> tuple[str, list[str]]:
     return t, kept
 
 
+# ---------- 영어 제목 (dealnews 등) ----------
+_EN_SALE = re.compile(
+    r"\b(?:sale|deals?|clearance|doorbusters?|savings|specials|event|promo\s*code|coupon|offer|sitewide|"
+    r"up\s*to|at\s*least|off\s*everything|buy\s*more|bogo|buy\s*(?:one|\d+)\s*,?\s*get|gift\s*cards?|egift|"
+    r"membership|account|apy|subscription|bundles?|items)\b|\$\s*[\d,]+s\b|\d+\s*%\s*off", re.I)
+_EN_TAIL = re.compile(
+    r"\s*\+\s*(?:free\s+)?(?:shipping|delivery|same\s*day|pickup|email|delivered|in-store)[^+]*$|"
+    r"\s*\+\s*free\s+(?:shipping|delivery|gifts?)[^+]*|"
+    r"\s*\bw/\s*(?:prime|plus|trade-?in|\$\s*[\d,.]+)\b|\s*\bon\s+orders?\s+(?:over\s+)?\$[\d,.]+\+?|"
+    r"\s*\bfor\s+(?:from\s+)?\$\s*[\d,]+(?:\.\d+)?|\s*\bfrom\s+\$\s*[\d,]+(?:\.\d+)?", re.I)
+
+
+def _english(t: str) -> Optional[str]:
+    """한글이 없는 영어 제목: 배송·가격 꼬리를 지우고, 세일 공지면 None."""
+    if _EN_SALE.search(t):
+        return None
+    prev = None
+    while prev != t:
+        prev, t = t, _EN_TAIL.sub(" ", t)
+    t = re.sub(r"\bw/\s*", " with ", t, flags=re.I)
+    t = re.sub(r"(\w)'s\b", r"\1s", t)
+    t = re.sub(r"(\d+)\s*-?\s*packs?\b", r" \1개 ", t, flags=re.I)       # 3-Pack → 3개
+    t = re.sub(r"\b(\d+(?:\.\d+)?)\s*-?\s*(?:inch|in\.|\")", r" \1인치 ", t, flags=re.I)
+    return t
+
+
+def _normalize(t: str) -> str:
+    """키 규칙 정규화 (R2): 같은 상품의 다른 표기를 하나로."""
+    t = re.sub(r"(?<![가-힣])코크(?=\s|제로|라이트|$|[^가-힣])", "코카콜라 ", t)   # 코크제로=코카콜라 제로 (피코크·초코크림 제외)
+    t = re.sub(r"제주\s*삼다수", "삼다수", t)
+    t = re.sub(r"메가\s*mgc\s*커피", "메가커피", t, flags=re.I)
+    t = re.sub(r"난각\s*(?:번호)?\s*(\d)\s*번", r"난각\1번", t)
+    t = _GLUED_COUNT.sub(r"\1 ", t)
+    t = re.sub(r"([a-z]\d{0,3})\+(?=\s|$|[^\d\s+])", r"\1plus", t, flags=re.I)   # 갤럭시탭 S10+·FE+ (묶음 아님)
+    return t
+
+
+def _model_sub(m) -> str:
+    tok = m.group(0)
+    if re.search(r"[a-z]\d", tok, re.I):
+        return tok.replace("-", "")                   # 모델번호는 한 토큰 (키에 남음)
+    return tok
+
+
+def _dims_sub(m) -> str:
+    a, b = m.group(1).replace(",", ""), m.group(2).replace(",", "")
+    if int(a) >= 30 and int(b) >= 30:
+        return f" {a}_x_{b} "
+    return m.group(0)
+
+
+def _protect(t: str) -> str:
+    """수량 해석 전에 숫자가 든 '이름' 조각을 보호: 등급 범위·하이픈 모델번호·크기."""
+    t = _GRADE.sub(lambda m: f" {m.group(1)}_{m.group(2)}{m.group(3)} ", t)
+    t = _HYPHEN_MODEL.sub(_model_sub, t)
+    t = _DIMS.sub(_dims_sub, t)
+    return t
+
+
+def _too_many(t: str) -> bool:
+    """여러 상품 나열 글인가 (F-001)."""
+    if sum(1 for r in _RAMEN if r in t) >= 2:
+        return True
+    if re.search(r"\d\s*원\s*,\s*[\d,]+\s*원", t):
+        return True                                   # '(… 22,590원, 22,450원/무료)' 옵션별 가격
+    # 가격이 2번 이상, 그 사이(쉼표·슬래시·마침표 뒤)에 다른 상품명
+    prices = list(re.finditer(r"\d{1,3}(?:,\d{3})+\s*원|\d{3,}\s*원|\$\s*\d[\d,.]*|\d[\d,.]*\s*(?:\$|달러)", t))
+    if len(prices) >= 2:
+        for a, b in zip(prices, prices[1:]):
+            mid = t[a.end():b.start()]
+            if "(" in mid or ")" in mid:
+                outside = re.search(r"\)(.*)\(", mid)      # '모니터($81), ZSUS 휴대용모니터($28)' → 괄호 사이 바깥 글자
+                if not outside:
+                    continue                              # 한쪽 가격만 괄호 안 ('(15,900원/무료) 쿠폰가 3,900원')
+                mid = outside.group(1)
+            words = re.sub(r"일반|카드사?|하나|국민|신한|삼성|현대|롯데|우리|농협|nh|kb|bc|씨티|토스|카카오|페이코|네이버|스마일|온누리|페이|쿠폰|와우|멤버십?|네멤|t멤|유클|스카|체감|최종|할인가?|정가|판매가|기존|원래|"
+                           r"적용가?|결제|무료|무배|배송료|배송비?|택배비|우편비|추가|개당|프라임|→|->|에서|부터|시|가", " ", mid, flags=re.I)
+            if re.search(r"[가-힣a-z]{2,}|[가-힣]", words, re.I):
+                return True
+    # '… 등' (괄호 밖) · '1,600원 등' → 여러 상품 ('한우 국거리, 불고기, 차돌박이 등', '뿌셔뿌셔 24개 등')
+    body = re.sub(r"[(\[][^)\]]*[)\]]", " ", t)
+    if re.search(r"(?<![가-힣\d])등(?=\s|$|[(\[/,])", body) or re.search(r"원\s*등(?![가-힣])", t):
+        return True
+    return False
+
+
 def parse_product(title: str) -> Optional[ProductInfo]:
     if not title:
         return None
     raw = _clean_truncated(title)
-    if _SKIP_TAG.search(raw[:12]) or _ROUTE.search(raw):
+    if _ROUTE.search(raw):
         return None
+    english = not re.search(r"[가-힣]", raw)
+    if english:
+        raw = _english(raw)
+        if raw is None:
+            return None
     t, lead = _strip_lead(raw)
-    if lead == ["__skip__"]:
-        return None
+    if lead == ["__skip__"] or _SKIP_TAG.search(t[:12]):
+        return None                                   # 말머리 뒤 본문 첫머리의 '네이버페이' 등 (C-1-5)
+    # 브랜드 말머리가 본문 첫머리와 같으면 한 번만 ('[스파클] 스파클 생수', '[제주삼다수]삼다수')
+    squash = lambda x: re.sub(r"\s+", "", _normalize(x)).lower()
+    lead = [k for k in lead if not squash(t).startswith(squash(k))]
     t = " ".join(lead + [t])
     cond = bool(_COND.search(title))
-    if _SKIP.search(t):
+    if _SKIP.search(t) or _too_many(raw):
         return None
+    t = _normalize(t)
+    t = _protect(t)
     pct_free = _PCT_OK.sub(" ", t)
     if _PCT.search(pct_free):
         return None
@@ -330,7 +456,16 @@ def parse_product(title: str) -> Optional[ProductInfo]:
     for ptxt in paren_txt:                          # 괄호 안 수량은 바깥에 없는 정보만 보충
         pq = _quantities(ptxt, egg)
         prest = pq.pop("rest")
-        if q.get("count") and pq.get("count") and pq.get("count_is_inner") and not q.get("count_is_inner")                 and not q.get("count_fixed"):
+        if "+" in ptxt:
+            pq["count"] = None                        # '(2개입+1개입)'·'(밀크18입+초코18입)' 은 구성 설명 → 곱하지 않음
+        if pq.get("total_fixed"):                     # '(총 4팩)'·'(총4병)' → 바깥 개수·N+M 보다 우선
+            q["total_fixed"] = True
+            if pq.get("count"):
+                q["count"], q["label"], q["count_fixed"] = pq["count"], pq["label"], True
+                pq["count"] = None
+        if q.get("count") and pq.get("count") and pq.get("count_is_inner") and not q.get("count_is_inner") \
+                and not q.get("count_fixed") and not (q.get("count_from_mul") and q.get("usize")):
+            # (단 '(10입) 415g x 2개' 처럼 바깥이 '용량 x 개수' 면 괄호 개입수는 곱하지 않음)
             q["count"] *= pq["count"]                 # '멀티팩(5개입) 4팩' → 20개
             pq["count"] = None
         for k in ("count", "usize", "total", "content", "ucontent"):
@@ -359,7 +494,8 @@ def parse_product(title: str) -> Optional[ProductInfo]:
     # N+M: 개수가 있으면 배수, 없으면 N+M 개
     if mult > 1 and not q.get("total_fixed"):
         if count:
-            count *= mult
+            if count != mult:                       # '20+20, 40PET'·'1+1 2개'·'5개 4+1' → 적힌 수가 이미 총수
+                count *= mult
         else:
             count = mult
             if usize is None and total is not None:
@@ -389,7 +525,7 @@ def parse_product(title: str) -> Optional[ProductInfo]:
     work = _PROMO.sub(" ", work)
     toks = []
     for w in re.sub(r"[^\w가-힣.]+", " ", work).split():
-        w = w.strip("._")
+        w = w.strip("._").replace("_x_", "x").replace("_", "~")
         w = _SYNONYM.get(w, w)
         if not w or w in _STOP_TOKENS:
             continue
@@ -489,9 +625,15 @@ def _quantities(work: str, egg: bool) -> dict:
         if out["count"] is None:
             out["count"] = n
             out["label"] = _label(ub) if ub else (_label(ua) if ua and is_count_unit(ua) else "개")
+            out["count_from_mul"] = True
         work = work.replace(m.group(0), " ", 1)
     for m in list(_MUL_BARE.finditer(work)):                  # '딸기 * 8개', 'mx30롤'
-        n, u = int(m.group(1)), m.group(2)
+        gap, n, u = m.group(1), int(m.group(2)), m.group(3)
+        prev = work[:m.start()].split()[-1:] or [""]
+        nxt = work[m.end():].split()[:1] or [""]
+        if not u and ((not gap and (n >= 100 or re.match(r"[a-z]", nxt[0]))) or (re.search(r"[a-z]\d|\d[a-z]", prev[0])
+                                                 and not re.fullmatch(rf"[\d.]+(?:{_SIZE_UNITS})", prev[0]))):
+            continue                                  # 'X3700'(블랙박스)·'말코닉 X64 SD'·'272F900 X24' → 모델명
         if u and re.fullmatch(_CONTENT_UNITS, u, re.I):
             if out["ucontent"] is None:
                 out["ucontent"], out["cunit"] = n, u.lower()
@@ -512,6 +654,14 @@ def _quantities(work: str, egg: bool) -> dict:
         if u == "판" and not egg:
             continue
         packs.append((int(n), u, m.start(), m.group(0)))
+    # '365스틱 … 100포 2박스' → '365스틱' 은 제품명 (내용물 '포' 와 함께면 스틱을 개수로 쓰지 않음)
+    if any(u == "스틱" for _, u, _, _ in packs) and re.search(rf"{_NB}\d+\s*포(?![a-z가-힣])", work):
+        packs = [p for p in packs if p[1] != "스틱"]
+    # 'Nkg M입' (과일 등) → 총 무게 N kg 에 M개 (개당 N kg 아님)
+    if len(packs) == 1 and packs[0][1] == "입" and out["usize"] is None:
+        mk = re.search(rf"(?<![\d.,a-wyz])(\d+(?:\.\d+)?)\s*kg\s*,?\s*{packs[0][0]}\s*입", work, re.I)
+        if mk:
+            out["kg_total"] = True
     # 괄호 밖에서 이미 개수를 알면 '2박스' 같은 겉포장 수는 곱하지 않음 (괄호는 따로 처리)
     if packs and out["count"] is None:
         inner = [p for p in packs if p[1] in ("개입", "입", "p")]
@@ -569,6 +719,8 @@ def _quantities(work: str, egg: bool) -> dict:
         if out["total"] is not None:
             if out["count"]:
                 out["usize"] = g
+        elif out["count"] and out.get("kg_total") and base == "g" and g >= 1000:
+            out["total"], out["base"] = g, base       # '썬골드키위 5.73kg 41입' → 총 5.73kg
         elif out["count"]:
             out["usize"], out["base"] = g, base
             if out.get("inner_pos") is not None and pos > out["inner_pos"]:

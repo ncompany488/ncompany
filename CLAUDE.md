@@ -16,7 +16,7 @@ hotdeal/sources/*.py ──Deal──▶ store.merge ─▶ dedup.group_deals �
 |---|---|
 | 총괄 (메인 세션) | `hotdeal/models.py`, `hotdeal/http.py`, `collect.py`, `CLAUDE.md`, `docs/feedback/BACKLOG.md`, `.claude/` |
 | `collector` | `hotdeal/sources/*.py` (배정받은 파일만), `tools/try_source.py` |
-| `processor` | `hotdeal/dedup.py`, `hotdeal/parse.py`, `tests/test_dedup.py`, `tests/test_parse.py` |
+| `processor` | `hotdeal/dedup.py`, `hotdeal/parse.py`, `hotdeal/product.py`, `hotdeal/history.py`, `tests/test_dedup.py`, `tests/test_parse.py`, `tests/test_product.py`, `tests/test_history.py`, `tests/fixtures/product_titles.json` |
 | `frontend` | `site/*` (단, `site/data/` 는 생성물) |
 | `alerts` | `hotdeal/alerts.py`, `tests/test_alerts.py` |
 | `ops` | `.github/workflows/*`, `hotdeal/store.py`, `requirements.txt`, `README.md` |

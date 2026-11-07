@@ -51,7 +51,13 @@
   }
   const ts = (g) => new Date(g.posted_at || g.first_seen || 0).getTime() || 0;
   const num = (v) => (Number.isFinite(v) ? v : 0); // 데이터 숫자 칸은 숫자만 화면에
-  const won = (v) => (Number.isFinite(v) ? Math.round(v).toLocaleString("ko-KR") + "원" : "");
+  // 역대 최저가 칸의 금액: KRW 는 "1,234원", USD 는 센트 정수 → "$12.34"
+  const curOf = (p) => (p?.currency === "USD" ? "USD" : "KRW");
+  const won = (v, p) => {
+    if (!Number.isFinite(v)) return "";
+    if (curOf(p) === "USD") return v > 0 && v < 0.5 ? "$0.01 미만" : "$" +(Math.round(v) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return Math.round(v).toLocaleString("ko-KR") + "원";
+  };
   const cnt = (v) => (Number.isFinite(v) && v > 0 ? v : null);
   // 날짜: 올해면 "10/12", 다른 해면 "2025.6.12" (문자열의 날짜를 그대로 써서 시간대 밀림 없음)
   const THIS_YEAR = new Date().getFullYear();
@@ -62,12 +68,26 @@
     return d.y === THIS_YEAR ? `${d.mo}/${d.da}` : `${d.y}.${d.mo}.${d.da}`;
   };
   // 역대 최저가 정보 (없거나 형식이 이상하면 null → 카드는 예전 그대로)
-  const prodOf = (g) => (g.product && typeof g.product === "object" && (g.currency || "KRW") === "KRW" ? g.product : null);
+  // product.currency(없으면 KRW) 가 딜 통화와 같을 때만 (KRW·USD). 통화가 어긋나면 금액을 잘못 읽으므로 숨김
+  const prodOf = (g) => {
+    const p = g.product;
+    if (!p || typeof p !== "object") return null;
+    const pc = p.currency ?? "KRW", gc = g.currency || "KRW";
+    return (pc === "KRW" || pc === "USD") && pc === gc ? p : null;
+  };
   const histOf = (p) => (p && p.history && typeof p.history === "object" ? p.history : null);
-  const samplesOf = (h) => (h && Number.isFinite(h.samples) && h.samples > 0 ? Math.floor(h.samples) : 0);
+  // 표본 수: 조건부 기준 판정이면 조건부 기록 수(cond_samples, 없으면 samples)
+  const samplesOf = (h) => {
+    const v = h && (h.basis === "cond" && Number.isFinite(h.cond_samples) ? h.cond_samples : h.samples);
+    return Number.isFinite(v) && v > 0 ? Math.floor(v) : 0;
+  };
   // 화면에 쓰는 판정: '역대최저' 는 과거 기록 2건 이상일 때만 (1건 이하면 배지 없음)
   const verdictOf = (p) => (!p ? null : p.verdict === "lowest" && samplesOf(histOf(p)) < 2 ? null : p.verdict);
   const isCond = (o) => !!(o && o.cond === true);
+  // 판정 기준: "cond" = 조건부 기록끼리 비교, 그 외(없음 포함) = 일반가 기록끼리
+  const basisOf = (p) => (histOf(p)?.basis === "cond" ? "cond" : "plain");
+  // 현재 딜이 조건부인데 일반가 기록과 비교한 판정은 같은 조건의 비교가 아님 → 필터·정렬에서는 판정 없음으로 취급
+  const fairVerdictOf = (p) => (isCond(p) && basisOf(p) !== "cond" ? null : verdictOf(p));
   const obsOf = (o) => (o && typeof o === "object" && (Number.isFinite(o.price) || Number.isFinite(o.unit_price)) ? o : null);
   // 단위: "개"(기본) 또는 "100g"/"100ml" (무게·용량 판매 — count 없음, unit_price 는 100g/100ml 당)
   const WEIGHT = { "100g": "g", "100ml": "ml" };
@@ -101,7 +121,7 @@
     let list = state.data.groups.filter((g) => {
       if (state.hideEnded && g.ended) return false;
       if (state.multiOnly && g.sources.length < 2) return false;
-      if (state.lowOnly && !["lowest", "near"].includes(verdictOf(prodOf(g)))) return false;
+      if (state.lowOnly && !["lowest", "near"].includes(fairVerdictOf(prodOf(g)))) return false;
       // '전체'는 국내 + 공식몰만. 해외 딜은 '해외' 탭에서만 보임
       const region = regionOf(g, meta);
       if (state.region === "all" ? region === "global" : region !== state.region) return false;
@@ -127,7 +147,7 @@
 
   // 역대최저 대비 싼 순: 역대최저 → 근접(차이 작은 순) → 비쌈(차이 작은 순) → 첫 기록 → 정보 없음
   const RANK = { lowest: 0, equal: 1, near: 1, higher: 2, first: 3 };
-  const lowRank = (g) => RANK[verdictOf(prodOf(g))] ?? 4;
+  const lowRank = (g) => RANK[fairVerdictOf(prodOf(g))] ?? 4;
   const lowDiff = (g) => { const v = prodOf(g)?.diff_pct; return Number.isFinite(v) ? v : Infinity; };
 
   // ---------- 그리기 ----------
@@ -144,8 +164,8 @@
   // "개당 795원 · 20개 15,900원" / "100g당 775원 · 2kg 15,500원" (단가 모르면 "15,900원")
   const obsText = (o, p) => {
     const u = unitOf(o, p), q = qtyText(o, p);
-    if (u !== null) return [`${unitName(p)}당 ${won(u)}`, [q, won(o.price)].filter(Boolean).join(" ")].filter(Boolean).join(" · ");
-    return [q, won(o.price)].filter(Boolean).join(" ");
+    if (u !== null) return [`${unitName(p)}당 ${won(u, p)}`, [q, won(o.price, p)].filter(Boolean).join(" ")].filter(Boolean).join(" · ");
+    return [q, won(o.price, p)].filter(Boolean).join(" ");
   };
   function lowest(g, meta) {
     const p = prodOf(g);
@@ -155,18 +175,33 @@
     const wt = !!WEIGHT[p.unit];
     const c = wt ? null : cnt(p.count);
     const q = wt ? sizeText(p.size_g, p) || (p.size ? String(p.size) : "") : c ? `${p.size ? p.size + "×" : ""}${c}${countLabel(p)}` : "";
-    const unit = Number.isFinite(p.unit_price) ? esc(`${unitName(p)}당 ${won(p.unit_price)}` + (q ? ` (${q})` : "")) : "";
+    const unit = Number.isFinite(p.unit_price) ? esc(`${unitName(p)}당 ${won(p.unit_price, p)}` + (q ? ` (${q})` : "")) : "";
     const diff = Number.isFinite(p.diff_pct) ? Math.round(p.diff_pct * 10) / 10 : null;
     // 'first'(첫 기록)·표본 부족 '역대최저'·모르는 판정은 배지 없음
-    const badge = {
+    const cur = isCond(p), basis = basisOf(p);
+    const pct = diff !== null ? (diff > 0 ? "+" : "") + diff + "%" : "";
+    // 문구: 일반가끼리 = 예전 그대로 / 조건부끼리 = "조건부 최저" / 조건부 현재가를 일반가 기록과 비교 = "일반가 최저" (🏆 없음)
+    const badge = (basis === "cond" ? {
+      lowest: `<span class="pv low" title="조건부(카드·멤버십 등) 가격 기록끼리 비교">🏆 조건부 최저</span>`,
+      equal: `<span class="pv near">조건부 최저와 같음</span>`,
+      near: `<span class="pv near">조건부 최저 근접${pct ? " " + pct : ""}</span>`,
+      higher: `<span class="pv high">조건부 최저 대비 ${pct || "비쌈"}</span>`,
+    } : cur ? {
+      lowest: `<span class="pv high" title="조건부 가격을 일반가 기록과 비교한 값">일반가 최저보다 쌈</span>`,
+      equal: `<span class="pv high">일반가 최저와 같음</span>`,
+      near: `<span class="pv high">일반가 최저 ${pct || "근접"}</span>`,
+      higher: `<span class="pv high">일반가 최저 대비 ${pct || "비쌈"}</span>`,
+    } : {
       lowest: `<span class="pv low">🏆 역대최저</span>`,
       equal: `<span class="pv near">역대최저와 같음</span>`,
-      near: `<span class="pv near">최저가 근접${diff !== null ? " +" + diff + "%" : ""}</span>`,
-      higher: `<span class="pv high">역대최저 대비 ${diff !== null ? "+" + diff + "%" : "비쌈"}</span>`,
-    }[v] || "";
+      near: `<span class="pv near">최저가 근접${pct ? " " + pct : ""}</span>`,
+      higher: `<span class="pv high">역대최저 대비 ${pct || "비쌈"}</span>`,
+    })[v] || "";
+    // 현재 딜이 조건부면 줄 맨 앞에 '조건부' 태그 (단가·배지가 없어도 항상)
+    const curTag = cur ? condTag(p).trim() : "";
     const n = samplesOf(h);
     const since = h ? md(h.since) : "";
-    const rec = n ? `<span class="pn"${since ? ` title="${esc(since)}부터 기록"` : ""}>최근 ${n}건 중</span>` : "";
+    const rec = n ? `<span class="pn"${since ? ` title="${esc(since)}부터 기록"` : ""}>${basisOf(p) === "cond" ? "조건부 " : "최근 "}${n}건 중</span>` : "";
 
     let low = null, rows = [];
     if (h) {
@@ -176,19 +211,23 @@
       if (!rows.length) rows = [obsOf(h.low_unit), obsOf(h.low_same_count)].filter((o, i, a) => o && a.findIndex((x) => x && x.url === o.url && x.price === o.price) === i);
       if (!low && rows.length) low = rows[0];
     }
-    // 최저가 줄이 없으면 표본 수는 배지 옆에
-    const recInRow = badge && rec && !low;
-    let out = unit || badge ? `<div class="prow">${unit ? `<span class="punit">${unit}</span>` : ""}${badge}${recInRow ? rec : ""}</div>` : "";
+    // 조건부 최저 줄 (본 최저가와 같은 글이면 생략)
+    const lc = h ? obsOf(h.low_cond) : null;
+    const showLc = !!lc && !(low && low.url === lc.url && low.price === lc.price);
+    // 표본 수는 판정 기준 쪽 줄에 (조건부 기준이고 조건부 줄이 있으면 그 줄), 최저가 줄이 없으면 배지 옆에
+    const recOnLc = basis === "cond" && showLc;
+    const recInRow = badge && rec && !low && !recOnLc;
+    let out = unit || badge || curTag ? `<div class="prow">${curTag}${unit ? `<span class="punit">${unit}</span>` : ""}${badge}${recInRow ? rec : ""}</div>` : "";
     if (!h) return out;
 
     const table = rows.length > 1; // 한 줄뿐이면 '역대 최저' 줄과 같으므로 표는 생략
-    if (low) out += `<div class="plow${isCond(low) ? " cond" : ""}">${condTag(low)}${v === "lowest" ? "이전 최저" : "역대 최저"} ${esc(obsText(low, p))} · ${srcLink(low, meta)}${rec ? " · " + rec : ""}</div>`;
+    // '이전 최저' 는 판정 기준(일반가/조건부) 쪽 줄에만
+    if (low) out += `<div class="plow${isCond(low) ? " cond" : ""}">${condTag(low)}${v === "lowest" && basis !== "cond" ? "이전 최저" : "역대 최저"} ${esc(obsText(low, p))} · ${srcLink(low, meta)}${rec && !recOnLc ? " · " + rec : ""}</div>`;
     // 조건부(카드·멤버십 등) 최저가는 따로 한 줄 (본 최저가와 같은 글이면 생략)
-    const lc = obsOf(h.low_cond);
-    if (lc && !(low && low.url === lc.url && low.price === lc.price)) {
+    if (showLc) {
       const lu = unitOf(lc, p);
-      const lt = lu !== null ? `${unitName(p)}당 ${won(lu)}` : obsText(lc, p);
-      out += `<div class="plow cond">조건부 최저 ${esc(lt)} (카드/멤버십 등) · ${srcLink(lc, meta)}</div>`;
+      const lt = lu !== null ? `${unitName(p)}당 ${won(lu, p)}` : obsText(lc, p);
+      out += `<div class="plow cond">${v === "lowest" && basis === "cond" ? "이전 조건부 최저" : "조건부 최저"} ${esc(lt)} (카드/멤버십 등) · ${srcLink(lc, meta)}${rec && recOnLc ? " · " + rec : ""}</div>`;
     }
     if (table) {
       const units = rows.map((o) => unitOf(o, p));
@@ -200,7 +239,7 @@
         const same = !!curKey && cnt(wt ? o.size_g : o.count) === curKey;
         const top = units[i] !== null && units[i] === best && (!plain.length || !isCond(o));
         const cls = [same && "cur", top && "best", isCond(o) && "cond"].filter(Boolean).join(" ");
-        return `<tr class="${cls}"><td>${esc(qtyText(o, p) || "-")}${same ? " <b>현재</b>" : ""}</td><td>${esc(won(o.price) || "-")}</td><td>${units[i] !== null ? esc(won(units[i])) : "-"}${top ? " 🏆" : ""}</td><td>${condTag(o)}${srcLink(o, meta, true)}</td></tr>`;
+        return `<tr class="${cls}"><td>${esc(qtyText(o, p) || "-")}${same ? " <b>현재</b>" : ""}</td><td>${esc(won(o.price, p) || "-")}</td><td>${units[i] !== null ? esc(won(units[i], p)) : "-"}${top ? " 🏆" : ""}</td><td>${condTag(o)}${srcLink(o, meta, true)}</td></tr>`;
       }).join("");
       out += `<details class="tiers"><summary>${wt ? "용량별" : "수량별"} 최저가</summary><table><thead><tr><th>${wt ? "용량" : "수량"}</th><th>가격</th><th>${esc(unitName(p))}당</th><th>원글</th></tr></thead><tbody>${trs}</tbody></table></details>`;
     }
