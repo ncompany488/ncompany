@@ -359,7 +359,7 @@
     if (!st || typeof st.sources !== "object" || !st.sources) return;
     const meta = srcMeta();
     $("#status").innerHTML = Object.entries(st.sources).map(([k, v]) =>
-      // blocked = 사이트가 수집을 막음(robots.txt·서버 차단) → 오류가 아니라 '수집 불가' 로 표시
+      // blocked = 사이트 robots.txt 가 수집을 금지함(서버 403 등은 오류로 표시) → 오류가 아니라 '수집 불가' 로 표시
       `<li title="${esc(v?.error || "")}"><span class="${v?.ok ? "ok" : v?.blocked ? "muted" : "err"}">●</span> ${esc(meta[k]?.name || k)} — ${v?.ok ? num(v.count) + "개" : v?.blocked ? "사이트가 자동 수집을 막아 제외" : "오류"}</li>`).join("")
       + (ago(st.run_at) ? `<li>마지막 수집: ${esc(new Date(st.run_at).toLocaleString("ko-KR"))}</li>` : "");
   }

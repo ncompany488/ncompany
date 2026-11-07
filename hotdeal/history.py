@@ -35,6 +35,13 @@ data/history.json (data 브랜치에 계속 누적, 72시간 정리 대상 아�
     현재 딜과 같은 가격·3일 이내인 과거 글은 같은 딜로 보고 기록에서 제외.
   · 표본(samples) 2건 미만이면 'first'(기록 부족). 표본 3건 이하인데 값이 3배 넘게 차이 나면 역시 'first'.
   · cur < 최저 → 'lowest', cur == 최저 → 'equal', +5% 이내 'near', 그 외 'higher'.
+  · (C-2-3) 'lowest' 인데 표본 ≤3, 단가 하락 >40%, 현재 총액이 최저 글 총액의 0.75~1.33배면 'first' 로 낮추고
+    history.suspect = {"drop_pct", "price_ratio"} 를 남김 (화면은 'first' 를 배지 없음으로 처리 → 판정 값 종류는 그대로).
+    근거 (R3, history 사본 18.8k obs 를 시간순으로 재생해 나온 'lowest' 479건 중 하락 >40% 12건, 손으로 확인):
+      하락 >40% & 표본 ≤3 : 9건 = 오류 2 (대패삼겹살 1+1 2kg, 스탠리 '외 다양'→파서에서 제외로 수정) / 정상 7
+                            (1.5L 페트 vs 캔, 대용량 묶음, 게임 반값 등) → '표본 ≤3 이면 보류' 만으로는 정상 7건을 잃음
+      그중 총액 0.75~1.33배 : 2건 = 대패삼겹살(0.98, 오류) · 대극천 복숭아 2kg vs 1kg(1.12, 애매) / 정상 페트·묶음은 0건
+      하락 >40% & 표본 ≥4 : 3건 (돈까스 16장 8팩 ×2 = 오류, 암바사 페트 = 정상) → 표본 많은 쪽은 건드리지 않음
 """
 from __future__ import annotations
 
@@ -57,6 +64,11 @@ OUTLIER_RATIO = 0.3      # 중앙값의 30% 미만 가격은 제목 해석 오�
 MIN_SAMPLES = 2          # 'lowest' 등 판정에 필요한 비교 가능한 과거 표본 수
 SMALL_SPREAD = 3.0       # 표본 3건 이하에서 값이 이 배수 넘게 벌어지면 판정 보류
 REPOST_DAYS = 3          # 같은 가격이 이 기간 안에 다시 올라오면 같은 딜
+# C-2-3 급락 판정 보류: 표본 ≤3 · 단가가 과거 최저보다 40% 넘게 낮음 · 총액은 과거 최저 글의 0.75~1.33배
+# (= 거의 같은 돈에 1.7배 넘는 양 → 대개 '1+1 2kg' 같은 수량 해석 오류). 근거는 모듈 설명 아래 표.
+SUSPECT_MAX_SAMPLES = 3
+SUSPECT_DROP = 0.40
+SUSPECT_PRICE_BAND = (0.75, 1.33)
 MIN_PRICE = 200          # (원화) 이보다 싼 글은 포인트 적립·이벤트로 보고 기록하지 않음
 _MIN_PRICE = {"KRW": MIN_PRICE, "USD": 100}   # 통화별 최소 가격 (USD 는 센트 = $1). 없는 통화는 기록 안 함
 _BOXY = {"박스", "세트"}
@@ -419,6 +431,13 @@ class History:
         low_val = ref["v"]
         if round(cur_val) < round(low_val):
             out["verdict"] = "lowest"
+            # C-2-3: 표본이 적은데 '거의 같은 총액으로 훨씬 많은 양' (단가 급락) → 수량 해석 오류 신호, 판정 보류
+            ratio = cur_price / ref["price"] if ref.get("price") else None
+            drop = 1 - cur_val / low_val
+            if mode != "total" and n_pool <= SUSPECT_MAX_SAMPLES and drop > SUSPECT_DROP and ratio is not None \
+                    and SUSPECT_PRICE_BAND[0] <= ratio <= SUSPECT_PRICE_BAND[1]:
+                out["verdict"] = "first"
+                out["history"]["suspect"] = {"drop_pct": round(drop * 100, 1), "price_ratio": round(ratio, 2)}
         elif round(cur_val) == round(low_val):
             out["verdict"] = "equal"
         else:

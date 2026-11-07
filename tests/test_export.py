@@ -89,7 +89,11 @@ with tempfile.TemporaryDirectory() as td:
     search = json.loads((td / "search.json").read_text(encoding="utf-8"))
     check([e["id"] for e in search] == [pid_of["r4"], pid_of["g3"], pid_of["c3"]], f"최근 기록 순: {[e['id'] for e in search]}")
     for e in search:
-        check(set(e) == {"id", "n", "cat", "b", "ul", "lu", "lp", "ld", "k"}, f"검색 필드: {set(e)}")
+        # P-008: 빈 값·기본값은 키째 생략 (app.js 는 없는 키 = 없음). 키 이름은 계약 그대로
+        check(set(e) <= {"id", "n", "cat", "b", "ul", "lu", "lp", "ld", "k"} and {"id", "n", "k"} <= set(e), f"검색 필드: {set(e)}")
+        check(all(v is not None and v != "" for v in e.values()), f"null 값 없음: {e}")
+        check(e.get("ul") != "개" and ("ul" not in e or e.get("b")), f"ul 은 기본값 '개'·총액 기준이면 생략: {e}")
+        check("lu" not in e or e.get("b"), f"총액 기준이면 lu 생략 (lp 가 총액 최저): {e}")
 
 ramen, cola, phone = shards[pid_of["r1"]], shards[pid_of["c1"]], shards[pid_of["g1"]]
 check(ramen["basis"] == "개" and ramen["cat"] == "식품", f"신라면 개당·식품: {ramen['basis']} {ramen['cat']}")
@@ -100,7 +104,7 @@ check(phone["basis"] is None and [o["u"] for o in phone["obs"]] == [1150000, 109
 s_by = {e["id"]: e for e in search}
 r = s_by[pid_of["r1"]]
 check((r["lu"], r["lp"], r["ld"], r["k"]) == (700, 14000, "2026-09-01", 4), f"신라면 최저(조건부 제외): {r}")
-check(s_by[pid_of["g1"]]["lu"] == 1090000 and s_by[pid_of["g1"]]["b"] is None, "갤럭시 최저 총액")
+check(s_by[pid_of["g1"]]["lp"] == 1090000 and "b" not in s_by[pid_of["g1"]], "갤럭시 최저 총액 (b·lu 생략)")
 
 # ---------- 카드(product_for_group)와 숫자 일치 (상품 3개) ----------
 # 가장 최근 글을 현재 딜로 하는 그룹 → basis·unit_label·그 글의 u, 그리고 역대 최저(low_unit) = 검색 lu
@@ -118,8 +122,8 @@ for last_url in ("r4", "c3", "g3"):
         check(card["unit_price"] == prod["obs"][-1]["u"], f"{pid} 현재 단가 {card['unit_price']} == u {prod['obs'][-1]['u']}")
     lo = card["history"]["low_unit"]
     want = lo["unit_price"] if card["unit"] else lo["price"]
-    check(want == e["lu"] and lo["price"] == e["lp"] and lo["date"][:10] == e["ld"],
-          f"{pid} 카드 역대 최저 {lo['unit_price']}/{lo['price']} == 검색 {e['lu']}/{e['lp']}")
+    check(want == (e["lu"] if card["unit"] else e["lp"]) and lo["price"] == e["lp"] and lo["date"][:10] == e["ld"],
+          f"{pid} 카드 역대 최저 {lo['unit_price']}/{lo['price']} == 검색 {e.get('lu')}/{e['lp']}")
 
 # ---------- annotate_categories / pid ----------
 gs = [{"title": "[네이버]핫팩 20개입 (7,700원 / 무배)", "shop": "네이버",
@@ -135,6 +139,24 @@ check(nr["pid"] == pid_of["r1"], "기록에 있는 상품이면 pid")
 nn = h.product_for_group({"title": "[쿠팡]처음보는 과자 100g 3개 (3,000원/무료)", "price": 3000,
                           "sources": [{"url": "n2", "source": "ppomppu"}]})
 check(nn is not None and nn["pid"] is None, f"기록에 없으면 pid null: {nn and nn['pid']}")
+
+# ---------- P-008: 기록 1건뿐인 오래된 상품은 검색에서 빠짐 (샤드에는 남음) ----------
+from datetime import timedelta  # noqa: E402
+from hotdeal.parse import now_kst  # noqa: E402
+hs = History()
+recent = (now_kst() - timedelta(days=5)).isoformat()
+old = (now_kst() - timedelta(days=export.SEARCH_SINGLE_DAYS + 30)).isoformat()
+hs.observe([deal("[쿠팡]새로 본 과자 100g 3개 (3,000원/무료)", 3000, "s1", recent),
+            deal("[쿠팡]오래된 단일 과자 100g 3개 (3,000원/무료)", 3000, "s2", old),
+            deal("[쿠팡]오래된 두번 과자 100g 3개 (3,000원/무료)", 3000, "s3", old),
+            deal("[쿠팡]오래된 두번 과자 100g 3개 (2,900원/무료)", 2900, "s4", old)])
+with tempfile.TemporaryDirectory() as td:
+    td = Path(td)
+    rep = export.export_site(hs, [], td)
+    ids = [e["n"] for e in json.loads((td / "search.json").read_text(encoding="utf-8"))]
+    check(rep["shards"]["products"] == 3 and rep["search"]["entries"] == 2 and rep["search"]["dropped_old"] == 1,
+          f"오래된 단일 기록 상품만 검색 제외: {rep} {ids}")
+    check(not any("단일" in n for n in ids), f"검색 목록: {ids}")
 
 if fails:
     print(f"❌ 실패 {fails}건")

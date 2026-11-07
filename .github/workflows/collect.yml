@@ -76,7 +76,10 @@ jobs:
 
       # 소스별 연속 실패·0개 횟수를 data/health.json 에 기록 → 기준 넘으면 GitHub 이슈 (회복되면 닫힘)
       # 모니터링이 고장나도 데이터 저장·배포는 계속되도록 continue-on-error
+      # always(): 수집(collect.py)이 실패해도 실행 → status.json 이 없거나 오래됐으면 "collect.py 실행 실패" 이슈.
+      # (check 가 통과했을 때만. 수집이 실패하면 job 이 실패 상태라 아래 data 저장·배포 단계는 기본 조건(success())으로 건너뜀)
       - name: 고장 감지 (tools/health.py)
+        if: always() && steps.check.outcome == 'success'
         continue-on-error: true
         timeout-minutes: 3
         env:

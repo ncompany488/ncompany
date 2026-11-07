@@ -136,5 +136,21 @@ old["products"] = {k: v for k, v in old["products"].items() if not k.startswith(
 h4 = History(old)
 check(not h4.rebuilt and pid_of(h4, "k1") == pid_of(hg, "k1"), "옛 파일 호환")
 
+# ---------- C-2-3: 표본 적은데 '거의 같은 돈에 2배 양' 급락은 역대최저로 내지 않음 ----------
+hd = History()
+hd.observe([deal("[11번가]대패삼겹살 1kg 2팩 (15,890원/무료배송)", 15890, "d1", date="2026-09-01T10:00:00+09:00"),
+            deal("[G마켓]대패삼겹살 1kg 2팩 (16,900원/무료)", 16900, "d2", date="2026-09-20T10:00:00+09:00"),
+            deal("[옥션]대패삼겹살 2kg (17,500원/무료)", 17500, "d3", date="2026-10-10T10:00:00+09:00")])
+r = hd.product_for_group(group("대패삼겹살 1+1 2kg 15,500원", 15500))
+check(r["unit"] == "100g" and r["verdict"] == "first" and r["history"].get("suspect", {}).get("drop_pct", 0) > 40,
+      f"대패삼겹살 1+1 2kg (100g당 388원 vs 794원) → 판정 보류: {r['verdict']} {r['history'].get('suspect')}")
+# 정상 대폭 할인 (총액도 크게 낮음) 은 그대로 lowest
+r = hd.product_for_group(group("대패삼겹살 2kg 8,900원", 8900))
+check(r["verdict"] == "lowest" and "suspect" not in r["history"], f"총액도 싸면 정상 lowest: {r['verdict']}")
+# 표본이 4건 이상이면 건드리지 않음
+hd.observe([deal("[쿠팡]대패삼겹살 1kg 2팩 (15,990원)", 15990, "d4", date="2026-10-20T10:00:00+09:00")])
+r = hd.product_for_group(group("대패삼겹살 1+1 2kg 15,500원", 15500))
+check(r["verdict"] == "lowest", f"표본 4건이면 그대로: {r['verdict']} {r['history']['samples']}")
+
 print("실패", fails, "건" if fails else "— 모두 통과")
 sys.exit(1 if fails else 0)

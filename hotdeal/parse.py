@@ -48,11 +48,16 @@ def extract_price_krw(text: str) -> Optional[int]:
     for m in _KRW_RE.finditer(text):
         start, end = m.start(), m.end()
         after, before = text[end:], text[:start]
-        # "(34,500원/3,000원)" 처럼 금액 바로 뒤 "/금액" 은 배송비 자리
-        is_shipping = prev_end is not None and re.fullmatch(r"\s*/\s*", text[prev_end:start])
+        # "(34,500원/3,000원)" 처럼 금액 바로 뒤 "/금액" 은 배송비 자리.
+        # "(6,300원~/3,000원)" 의 '~' 는 '부터' 표시 → 그 뒤 "/금액" 도 배송비 (V-002)
+        is_shipping = prev_end is not None and re.fullmatch(r"\s*~?\s*/\s*", text[prev_end:start])
         prev_end = end
         if is_shipping or _NOT_PRICE_AFTER.match(after) or _NOT_PRICE_BEFORE.search(before):
             continue
+        # "8,508~ 26,317원" 처럼 '원' 없이 '~' 로 시작가를 적은 범위 → 시작가도 후보
+        rng = re.search(r"(?<![\d.,])(\d{1,3}(?:,\d{3})+|\d{3,})\s*~\s*$", before)
+        if rng and not _NOT_PRICE_BEFORE.search(before[:rng.start()]):
+            vals.append(int(rng.group(1).replace(",", "")))
         if m.group("man"):
             if not m.group("won") and not m.group("cheon"):
                 nxt = after[:1]

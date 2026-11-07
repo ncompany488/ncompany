@@ -33,6 +33,12 @@ def _parse_row(tr) -> Deal | None:
     m = re.search(r"wr_id=(\d+)", a.get("href", ""))
     if not m:
         return None
+    # 댓글 수 span(.cnt_cmt)과 스크린리더용 "댓글 N 개"(.sound_only)가 제목 <a> 안에 들어 있다.
+    # 그누보드는 댓글이 0개면 .cnt_cmt 자체가 없다 → 없으면 0. 숫자를 먼저 읽고 제거한 뒤 제목을 만든다.
+    cmt = tr.select_one("td.td_subject .cnt_cmt")
+    comments = (to_int(cmt.get_text()) if cmt else 0) or 0
+    for junk in a.select(".cnt_cmt, .sound_only"):
+        junk.decompose()
     title = " ".join(a.get_text(" ", strip=True).split())
     if not title:
         return None
@@ -49,8 +55,6 @@ def _parse_row(tr) -> Deal | None:
     thumb = img.get("src") if img and img.get("src") else None
     if thumb and thumb.startswith("http://"):
         thumb = "https://" + thumb[len("http://"):]  # cdn.dealbada.com 은 https 지원 (혼합콘텐츠 방지)
-    cmt = tr.select_one("td.td_subject .cnt_cmt")
-    comments = to_int(cmt.get_text()) if cmt else None
     return Deal(
         source=SOURCE.key, title=title, url=url,
         posted_at=parse_kr_datetime(date.get_text(strip=True)) if date else None,

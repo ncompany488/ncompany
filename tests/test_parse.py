@@ -20,6 +20,16 @@ def test_krw_basic():
     assert extract_price_krw("") is None
 
 
+def test_krw_from_price_and_shipping():
+    # V-002: '~' (부터) 뒤 '/3,000원' 은 배송비
+    assert extract_price_krw("[딜바다] 오뚜기 진라면 (6,300원~/3,000원)") == 6300
+    assert extract_price_krw("(6,300원~ / 3,000원)") == 6300
+    assert extract_price_krw("(6,300원~13,000원/3,000원)") == 6300
+    assert extract_price_krw("[알리]코인딜 신지모루 GAN 충전기 8,508~ 26,317원") == 8508
+    assert extract_price_krw("오뚜기 2~3인분 9,900원") == 9900
+    assert extract_price_krw("라면 (12,900원/3,000원)") == 12900
+
+
 def test_krw_man_unit():
     assert extract_price_krw("[일마존] 어고트론 LX PRO /20만") == 200000
     assert extract_price_krw("모니터 24만") == 240000

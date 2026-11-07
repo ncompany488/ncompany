@@ -6,6 +6,8 @@ data/health.json 에 누적하고, 기준을 넘으면 GitHub 이슈를 열고 �
 
 - GITHUB_TOKEN·GITHUB_REPOSITORY 가 없으면(내 PC) 기록만 하고 이슈는 건드리지 않는다.
 - 이 스크립트는 어떤 경우에도 0 으로 끝난다 (모니터링 때문에 데이터 저장·배포가 막히면 안 됨).
+- 차단(blocked)은 robots.txt 금지(RobotsDisallowed)만 뜻한다. 서버 HTTP 403 등은 진짜 고장 신호라 실패로 센다.
+- collect.py 자체가 실패해 status.json 이 없거나 20분 넘게 오래됐으면 "collect.py 실행 실패" 이슈를 연다.
 - 토큰은 절대 출력하지 않는다 (에러 메시지에는 HTTP 상태 코드만).
 """
 from __future__ import annotations
@@ -13,7 +15,7 @@ from __future__ import annotations
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -30,6 +32,9 @@ LABEL = "source-broken"
 TITLE_PREFIX = "[수집 고장]"
 TOTAL_KEY = "_total"          # 전체 딜 0개
 CHECK_KEY = "_check"          # tools/check.py 실패
+COLLECT_KEY = "_collect"      # collect.py 실행 실패 (status.json 없음/오래됨)
+TOTAL_ZERO_THRESHOLD = 2      # 전체 0개가 2회 연속일 때만 이슈 (한 번 삐끗한 실행은 무시)
+STALE_MINUTES = 20            # status.json 의 run_at 이 이보다 오래되면 이번 실행 결과가 아님
 API = "https://api.github.com"
 
 
@@ -51,7 +56,7 @@ def update_streaks(health: dict, status: dict) -> dict:
         count = int(s.get("count") or 0)
         total += count
         if s.get("blocked"):
-            # 차단(robots 금지·GitHub IP 차단)은 고장이 아님 → 횟수 초기화, 이슈 판단 보류
+            # 차단(robots.txt 금지 = RobotsDisallowed)만 고장이 아님. 서버 403 은 blocked 가 아니라 실패로 센다 → 횟수 초기화, 이슈 판단 보류
             h["fail_streak"] = 0
             h["zero_streak"] = 0
             h["state"] = "blocked"
@@ -80,7 +85,13 @@ def update_streaks(health: dict, status: dict) -> dict:
         if key not in (status.get("sources") or {}):
             del src[key]
             verdict[key] = "ok"
-    verdict[TOTAL_KEY] = "broken" if total == 0 else "ok"
+    if total == 0:
+        health["total_zero_streak"] = health.get("total_zero_streak", 0) + 1
+        # 1회째는 판단 보류(열려 있던 이슈도 그대로), 연속 2회째부터 이슈
+        verdict[TOTAL_KEY] = "broken" if health["total_zero_streak"] >= TOTAL_ZERO_THRESHOLD else "neutral"
+    else:
+        health["total_zero_streak"] = 0
+        verdict[TOTAL_KEY] = "ok"
     health["total_count"] = total
     health["run_at"] = status.get("run_at")
     return verdict
@@ -90,6 +101,10 @@ def describe(key: str, health: dict) -> tuple[str, str]:
     if key == TOTAL_KEY:
         return (f"{TITLE_PREFIX} 전체 딜 0개",
                 "이번 수집에서 모든 소스를 합쳐 딜이 0개였습니다. 네트워크·공통 코드(collect.py, http.py) 문제일 수 있습니다.")
+    if key == COLLECT_KEY:
+        return (f"{TITLE_PREFIX} collect.py 실행 실패",
+                "수집 단계(collect.py)가 실패했거나 결과(status.json)를 남기지 못했습니다. "
+                "이번 실행은 data 브랜치 저장·배포를 하지 않았고 이전 사이트와 데이터는 그대로입니다. 실행 기록의 수집 단계 로그를 확인하세요.")
     if key == CHECK_KEY:
         return (f"{TITLE_PREFIX} 배포 전 점검(tools/check.py) 실패",
                 "배포 전 점검이 실패해서 이번 실행은 수집·배포를 하지 않았습니다. "
@@ -168,6 +183,20 @@ def sync_issues(gh: GitHub, verdict: dict[str, str], health: dict) -> None:
 
 # ---------------- 실행 ----------------
 
+def status_is_stale(status, now: datetime | None = None) -> bool:
+    """status.json 이 없거나(깨짐 포함) run_at 이 STALE_MINUTES 보다 오래됐으면 True.
+    run_at 을 해석할 수 없으면(예전 형식) 오래됐다고 단정하지 않는다."""
+    if not isinstance(status, dict) or not isinstance(status.get("sources"), dict):
+        return True
+    try:
+        t = datetime.fromisoformat(str(status.get("run_at")))
+    except ValueError:
+        return False
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=timezone.utc)
+    return (now or datetime.now(timezone.utc)) - t > timedelta(minutes=STALE_MINUTES)
+
+
 def load_json(p: Path, default):
     try:
         return json.loads(p.read_text(encoding="utf-8"))
@@ -194,13 +223,20 @@ def main(argv: list[str], session=None) -> int:
         return 0
 
     status = load_json(STATUS, None)
-    if not isinstance(status, dict) or not isinstance(status.get("sources"), dict):
-        print(f"[health] {STATUS.name} 를 읽지 못함 → 건너뜀")
+    if status_is_stale(status):
+        print(f"[health] {STATUS.name} 가 없거나 {STALE_MINUTES}분 넘게 오래됨 → collect.py 실행 실패로 간주")
+        gh = make_github(session)
+        if gh:
+            try:
+                sync_issues(gh, {COLLECT_KEY: "broken"}, {})
+            except Exception as e:
+                print(f"[health] 이슈 확인 실패: {e}")
         return 0
     health = load_json(HEALTH, {})
     if not isinstance(health, dict):
         health = {}
     verdict = update_streaks(health, status)
+    verdict[COLLECT_KEY] = "ok"  # 최신 status.json 이 있으니 collect.py 는 돌았음
     verdict[CHECK_KEY] = "ok"  # 여기까지 왔으면 배포 전 점검은 통과한 것
     health["updated_at"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     try:

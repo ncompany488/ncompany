@@ -140,9 +140,14 @@ for i in range(4):
 check(h["sources"]["b"]["zero_streak"] == 8, f"연속 0개 8 기대: {h['sources']['b']}")
 check(len(gh.open_for("b")) == 1, "연속 0개 8회 이슈")
 
-# 6) 전체 0개 → 즉시 이슈, 다음에 딜이 생기면 닫힘
+# 6) 전체 0개 → 연속 2회째부터 이슈(1회는 무시), 다음에 딜이 생기면 닫힘
+h = run(status(a="zero", b="zero"))
+check(h["total_zero_streak"] == 1 and not gh.open_for(health.TOTAL_KEY), "전체 0개 1회는 이슈 아님")
+run(status(a="ok", b="ok"))
+h = run(status(a="zero", b="zero"))
+check(h["total_zero_streak"] == 1 and not gh.open_for(health.TOTAL_KEY), "중간에 딜이 생기면 연속 횟수 초기화")
 run(status(a="zero", b="zero"))
-check(len(gh.open_for(health.TOTAL_KEY)) == 1, "전체 0개 이슈")
+check(len(gh.open_for(health.TOTAL_KEY)) == 1, "전체 0개 연속 2회 이슈")
 run(status(a="zero", b="zero"))
 check(len(gh.open_for(health.TOTAL_KEY)) == 1, "전체 0개 중복 이슈")
 run(status(a="ok", b="ok"))
@@ -170,6 +175,33 @@ for i in range(2):
 check(len(gh.open_for(health.CHECK_KEY)) == 1, "점검 실패 이슈 1개")
 run(status(ppomppu="ok", ppomppu_global="ok"))
 check(not gh.open_for(health.CHECK_KEY), "점검 실패 이슈 닫힘")
+
+# 9b) 서버 403(blocked=False 실패)은 차단이 아니라 실패로 센다
+st = {"run_at": "t", "sources": {"f": {"ok": False, "count": 0, "error": "HTTPError: 403", "blocked": False}}}
+for i in range(8):
+    h = run(st)
+check(h["sources"]["f"]["fail_streak"] == 8 and len(gh.open_for("f")) == 1, "403 은 실패로 집계되어 이슈")
+run(status(ppomppu="ok", ppomppu_global="ok"))
+check(not gh.open_for("f"), "f 사라지면 닫힘")
+
+# 9c) collect.py 실패: status.json 없음 / 20분 넘게 오래됨 → 이슈 1개(중복 없음), 최신 결과가 오면 닫힘
+from datetime import datetime, timedelta, timezone  # noqa: E402
+health.STATUS.unlink()
+for i in range(2):
+    with redirect_stdout(io.StringIO()):
+        health.main([], session=gh)
+check(len(gh.open_for(health.COLLECT_KEY)) == 1, "status.json 없음 → 수집 실패 이슈 1개")
+old = status(ppomppu="ok")
+old["run_at"] = (datetime.now(timezone.utc) - timedelta(minutes=45)).isoformat()
+with redirect_stdout(io.StringIO()):
+    health.STATUS.write_text(json.dumps(old), encoding="utf-8")
+    health.main([], session=gh)
+check(len(gh.open_for(health.COLLECT_KEY)) == 1, "오래된 status.json → 이슈 유지(중복 없음)")
+fresh = status(ppomppu="ok", ppomppu_global="ok")
+fresh["run_at"] = (datetime.now(timezone.utc) - timedelta(minutes=2)).isoformat()
+run(fresh)
+check(not gh.open_for(health.COLLECT_KEY), "최신 status.json → 수집 실패 이슈 닫힘")
+check(health.status_is_stale(None) and not health.status_is_stale(fresh), "status_is_stale")
 
 # 10) GitHub API 고장 → 0 으로 끝나고 health.json 은 저장, 토큰 비출력
 bad = FakeGitHub()

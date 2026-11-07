@@ -1,7 +1,7 @@
 """상품 페이지·과거 검색용 사이트 데이터 (docs/contract-product-pages.md).
 
   site/data/products/NN.json   NN = fnv1a32(pid UTF-8) % 64, 두 자리   { pid: Product }
-  site/data/search.json        [ {id, n, cat, b, ul, lu, lp, ld, k}, ... ]  최근 기록 순, 최대 20,000
+  site/data/search.json        [ {id, n, cat, b, ul, lu, lp, ld, k}, ... ]  최근 기록 순, 최대 20,000 (빈 값은 키째 생략, P-008)
 
 숫자는 history.py 의 비교 규칙(_norm·_infer·_compat·_val·_valid)을 그대로 써서 카드(group.product)와 맞춘다.
 상품의 '그래프 기준'(basis)은 가장 최근 기록을 현재 딜로 보고 product_for_group 과 같은 방식으로 고른 비교 기준:
@@ -24,11 +24,14 @@ from typing import Iterable, Optional
 
 from .category import categorize, categorize_many
 from .history import MIN_SAMPLES, REPOST_DAYS, History, _dt
+from .parse import now_kst
 from .store import ROOT
 
 SITE_DATA = ROOT / "site" / "data"
 N_SHARDS = 64
 SEARCH_MAX = 20000
+SEARCH_SINGLE_DAYS = 120   # P-008: 기록 1건뿐인 상품은 이 기간 안에 올라온 것만 검색 인덱스에
+SEARCH_MAX_BYTES = 1_400_000   # P-008: search.json 목표 크기 (< 1.5MB). 넘으면 오래된 단일 기록 상품부터 뺌
 _ORDER = ("n", "c", "w", "total")
 _SHARD_FILE = re.compile(r"^\d{2}\.json$")
 
@@ -176,13 +179,44 @@ def write_product_shards(hist: History, out_dir: Path = SITE_DATA / "products",
     return {"files": len(shards), "products": len(views), "bytes": total, "largest": largest}
 
 
+def _compact(e: dict) -> dict:
+    """P-008 검색 항목 경량화 (키 이름은 그대로, 없어도 되는 값은 뺌 — app.js 는 없는 키를 '없음'으로 처리):
+    · null·빈 값 제거
+    · b(기준)가 null(총액)이면 lu 는 화면에 안 쓰이므로 제거 (lp 가 총액 최저)
+    · ul 이 기본값 "개" 이거나 b 가 null 이면 제거 (app.js 기본값 "개")"""
+    out = {}
+    for k, v in e.items():
+        if k == "_last" or v is None or v == "":
+            continue
+        if k == "lu" and not e.get("b"):
+            continue
+        if k == "ul" and (v == "개" or not e.get("b")):
+            continue
+        out[k] = v
+    return out
+
+
 def write_search_index(hist: History, path: Path = SITE_DATA / "search.json",
                        views: Optional[dict] = None) -> dict:
-    """가격 있는 상품만, 최근 기록 순, 최대 SEARCH_MAX. 반환: {"entries", "bytes"}."""
+    """가격 있는 상품만, 최근 기록 순, 최대 SEARCH_MAX. 반환: {"entries", "bytes", "dropped_old"}.
+    기록 1건뿐인데 SEARCH_SINGLE_DAYS 보다 오래된 상품은 검색에서 뺌 (상품 페이지 샤드에는 남음).
+    그래도 SEARCH_MAX_BYTES 를 넘으면 기록 1건뿐인 상품을 오래된 것부터 더 뺌 (기록 2건 이상은 항상 유지)."""
     views = product_views(hist) if views is None else views
-    entries = sorted((e for _, e in views.values()), key=lambda e: e["_last"], reverse=True)[:SEARCH_MAX]
-    out = [{k: v for k, v in e.items() if k != "_last"} for e in entries]
-    return {"entries": len(out), "bytes": _write(Path(path), _dump(out))}
+    cutoff = (now_kst() - timedelta(days=SEARCH_SINGLE_DAYS)).isoformat()
+    entries = sorted((e for _, e in views.values()), key=lambda e: e["_last"], reverse=True)
+    kept = [_compact(e) for e in entries if e.get("k", 0) > 1 or (e["_last"] or "") >= cutoff][:SEARCH_MAX]
+    size = [len(_dump(e).encode("utf-8")) + 1 for e in kept]
+    total = sum(size) + 1
+    if total > SEARCH_MAX_BYTES:
+        drop = set()
+        for i in range(len(kept) - 1, -1, -1):          # 오래된 것부터
+            if total <= SEARCH_MAX_BYTES:
+                break
+            if kept[i].get("k", 0) <= 1:
+                drop.add(i)
+                total -= size[i]
+        kept = [e for i, e in enumerate(kept) if i not in drop]
+    return {"entries": len(kept), "bytes": _write(Path(path), _dump(kept)), "dropped_old": len(entries) - len(kept)}
 
 
 def export_site(hist: History, groups: Optional[Iterable[dict]] = None, data_dir: Path = SITE_DATA) -> dict:
