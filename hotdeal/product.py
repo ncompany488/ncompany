@@ -31,16 +31,21 @@ import re
 from dataclasses import dataclass
 from typing import Optional
 
-PARSER_VERSION = 6  # 키 규칙이 바뀌면 올린다 → History.load 가 모든 기록을 다시 분류
+from .category import _DECISIVE as _CAT_DECISIVE, _RULES as _CAT_RULES, categorize
+
+PARSER_VERSION = 8  # 키 규칙이 바뀌면 올린다 → History.load 가 모든 기록을 다시 분류
 # 5 (R3): 숫자로 시작하는 모델명·저장용량·5G·GHz·가전 용량은 무게가 아님(R-5), 조건부 새 표기(C-2-4),
 #         요금제·결제 이벤트 제외(C-2-6), 잔여어(임박·선물용·정상화…) 정리(P-007)
 # 6 (R3 후속): 가격오류·정상화 글 제외, 증정품 문구는 가전 문맥 판단에서 뺌, 모델번호가 있으면 가전 용량을 키에서 뺌
+# 7 (R4): 가전은 모델번호로만 식별 (모델번호 없는 가전 글은 기록 안 함), '증정외 다양'·'경품 이벤트(가격 있음)' 통과
+# 8 (R4 후속): TV 는 'TV' 단어 없이도 가전 (모델 모양·Crystal UHD·Neo QLED…), 모니터·노트북은 디지털 고정,
+#   부속품 단어(리모컨·물걸레·전용…)는 모델번호가 없을 때만 일반 규칙, category 의 '인버터→버터' 오분류 수정
 
 # ---------- 비교 대상이 아닌 글 ----------
 _SKIP = re.compile(
     r"기프트\s*카드|기프트\s*코드|상품권|금액권|교환권|\d+\s*만\s*원?\s*권|\d[\d,]*\s*원\s*권|모바일\s*쿠폰|"
     r"요금제|이용권|구독|리딤|일시\s*무료|무료\s*배포|할인\s*코드|쿠폰\s*(?:팩|북|받기|발급|배포|모음|이벤트)|"
-    r"택\s*1|골라\s*담기|외\s*다양|모음|종합|외\s*\d*\s*종|\d+\s*종\s*(?:세트|중)|전\s*모델|전\s*품목|라이브|live|"
+    r"택\s*1|골라\s*담기|(?<!증정)(?<!증정\s)외\s*다양|모음|종합|외\s*\d*\s*종|\d+\s*종\s*(?:세트|중)|전\s*모델|전\s*품목|라이브|live|"
     r"예고|안내|추천|후기|질문|아시는\s*분|세일|패키지|숙박|항공|티켓|입장권|왕복|편도|직항|경유|노선|"
     r"\b외\b|\s외\s|\s외$|중\s*택|"
     r"라방|랜덤\s*\d|클릭\s*적립|일일\s*적립|적립\s*\d|알림\s*(?:받기|신청)|팔로우|출석|(?<![가-힣])퀴즈|만보기|"
@@ -57,7 +62,7 @@ _SKIP = re.compile(
     r"이상\s*결제\s*시?\s*[\d,]+\s*(?:만\s*)?[천원]|결제\s*시\s*[\d,]+\s*원\s*(?:할인|청구)|"
     r"콘텐츠\s*페이|컨텐츠\s*페이|휴대폰\s*결제|\d\s*만?\s*원\s*당\s*[\d,]+\s*[천만원]|"
     # R3 후속: 가격 오류·이미 정상화 글 = 실제로 살 수 없던 가격 → 기록하지 않음 (역대최저 오염 방지)
-    r"정상화|가격\s*오류|오류\s*\?|응모|가입\s*이벤트|경품\s*이벤트|착한\s*가격\s*업소",
+    r"정상화|가격\s*오류|오류\s*\?|응모|가입\s*이벤트|착한\s*가격\s*업소",
     re.I,
 )
 # 포인트 적립 게시판성 말머리 → 통째로 제외
@@ -163,7 +168,7 @@ _STOP_TOKENS = {"x", "×", "*", "or", "등", "및", "외", "토스", "페이코"
                 # F-003 영어 불용어
                 "for", "with", "the", "and", "of", "by",
                 # R3 P-007 단독 잔여어 ('4봉 총 12인분' 의 총, '개당 500원꼴' 의 꼴, '증정포함' 의 포함, '(마감)')
-                "총", "꼴", "포함", "이미", "마감", "행사", "페이", "머니", "비씨", "쿠폰", "적용", "적용시"}
+                "총", "꼴", "포함", "이미", "마감", "행사", "페이", "머니", "비씨", "쿠폰", "적용", "적용시", "경품"}
 # 이름에서 빼도 상품이 같은 '제조사' (이름이 일반명사뿐이면 남김: '오뚜기 피자' ≠ '피자')
 # PB·상품 라인(곰곰·비비고·노브랜드·피코크…)과 원재료 업체(동원·사조·하림·풀무원)는 상품을 가르므로 넣지 않음
 _BRANDS = {
@@ -486,6 +491,112 @@ def _too_many(t: str) -> bool:
     return False
 
 
+# R3-2: '경품 이벤트' 는 상품 가격이 없을 때만 이벤트 글 ('GTA6 예약구매 경품 이벤트 (89,800원)' 은 상품)
+_EVENT_ONLY = re.compile(r"경품\s*이벤트|경품\s*증정\s*이벤트", re.I)
+
+# ---------- R4 가전: 모델번호로만 식별 ----------
+# 가전(category.py 기준)이라도 소모품·부속품은 일반 규칙 (필터·세제·리필·거치대·케이블…)
+_APPL_PART = re.compile(
+    r"필터|세제|세정제|세척제|탈취제|클리너|코팅제|리필|거치대|케이블|봉투|브러시|브러쉬|소모품|부품|호환|교체용|"
+    r"패드|더스트\s*백|먼지\s*봉투|커버|받침|선반|트레이|정리\s*용기|용기|리모컨|어댑터|배터리|호스|노즐|칫솔모|"
+    r"면도날|(?<![가-힣])날(?![가-힣])|원두|캡슐(?!\s*(?:커피\s*)?머신)|시트|걸레|라이너|물통|전용(?!\s*(?:가전|모델))",
+    re.I)
+# 디지털·PC 성격이면 기존 규칙 (category 가 가전으로 봐도: 스마트모니터·노트북·폰 등)
+_APPL_DIGITAL = re.compile(r"모니터|노트북|태블릿|스마트폰|휴대폰|(?<![가-힣])폰(?![가-힣])|이어폰|헤드폰|키보드|마우스|"
+                           r"그래픽\s*카드|ssd|(?<![a-z])pc(?![a-z])|(?<![a-z])msi(?![a-z])|qd\s*-?\s*oled|wqhd|(?<![a-z])qhd|게이밍|"
+                           r"(?:16[5-9]|1[7-9]\d|[2-9]\d\d)\s*hz|울트라\s*기어|ultragear|오디세이|odyssey|알파스캔|(?<![a-z])dell(?![a-z])|"
+                           r"(?<![가-힣])델(?![가-힣])|그램|프리\s*도스|freedos|맥북|갤럭시\s*북|스탠바이미|"
+                           # 모니터 모델 모양: LG 32GX870B·27GR95QE·27UP850N, 삼성 LS32FG500
+                           r"(?<![a-z\d])\d{2}(?:g[a-z]|up|ul|mr|ba|bk|sr|ml|mp|uq)\d{2,3}[a-z]{0,3}(?![a-z\d])|(?<![a-z\d])ls\d{2}[a-z]", re.I)
+# TV 신호: 'TV' 단어(한글 붙어도), Crystal UHD·Neo QLED·QNED·OLED evo, TV 모델 모양 (삼성 KU/KQ/QN/UN/LH##, LG OLED##·##UR/UT/QNED##)
+_TV_WORD = re.compile(r"(?<![a-z])tv(?![a-z])|티비|텔레비전|crystal\s*uhd|크리스탈\s*uhd|neo\s*qled|네오\s*qled|(?<![a-z])qned|"
+                      r"oled\s*evo|미니\s*엘이디|더\s*세리프|더\s*프레임|사이니지", re.I)
+_TV_MODEL = re.compile(r"(?<![a-z\d])(?:(?:ku|kq|qn|un|lh|kq)\d{2}[a-z]{1,4}\d{2,4}[a-z]*|oled\d{2}[a-z]\d[a-z]*|"
+                       r"\d{2}(?:ur|ut|uq|nano|qned|qn)\d{2,4}[a-z]*)(?![a-z\d])", re.I)
+_TV_BRAND = re.compile(r"삼성|samsung|(?<![a-z])lg(?![a-z])|엘지|tcl|하이센스|hisense|소니|sony|샤오미|xiaomi|필립스|이노스|더함|프리즘", re.I)
+# 모델번호 후보 (영문+숫자, 하이픈·점 허용). 최소 모양: 4글자 이상·영문 1개 이상·숫자 2개 이상 (E310·T17DX3),
+# 또는 6글자 이상·숫자 1개 (DUE4BGE). 단위·스펙 표기(21kg·852L·280W·163cm·2in1·144Hz·30000Pa·IPX7)는 제외.
+# 7글자 미만 모델은 다른 회사 같은 번호와 섞이지 않게 '브랜드:모델' 로 키를 만든다
+_MODEL_CAND = re.compile(r"(?<![A-Za-z0-9])[A-Za-z0-9]+(?:[-.][A-Za-z0-9]+)*(?![A-Za-z0-9])")
+_NOT_MODEL = re.compile(r"\d+(?:\.\d+)?(?:kg|g|ml|l|cm|mm|m|w|kw|wh|pa|rpm|hz|khz|v|mah|db|in1|p|k|cc|ea|t|gb|tb|"
+                        r"lm|mhz|ghz|x\d+)|\d+(?:x|in)\d+|x\d+|\d{4}(?:년)?|[a-z]?\d+(?:/\d+)+.*|ipx?\d+|usb\d*|wifi\d*|pm\d+", re.I)
+_BRAND_SKIP = {"mini", "new", "ai", "the", "neo", "led", "oled", "qled", "tv", "pro", "max", "ultra", "plus", "신형", "신제품",
+               "비스포크", "bespoke", "오브제", "오브제컬렉션", "디오스", "트롬", "휘센", "그랑데", "본사직영", "공식", "원격"}
+
+
+# 빠른 1차 거름: category.py 의 가전 단어가 하나도 없으면 가전일 수 없음 (categorize 전체 계산을 아낌)
+_APPL_WORDS = [rx for cat, strong, weak in _CAT_RULES if cat == "가전" for rx in (strong, weak)] +               [rx for rx, cat in _CAT_DECISIVE if cat == "가전"]
+
+
+def _is_tv(title: str) -> bool:
+    if _TV_WORD.search(title) or _TV_MODEL.search(title):
+        return True
+    # '인치' + TV 브랜드 + 긴 모델번호 ('하이센스 85인치 85Q6N…' 처럼 TV 단어 없는 글)
+    return bool(re.search(r"\d\s*인치", title) and _TV_BRAND.search(title)
+                and any(len(re.sub(r"[-.]", "", m.group(0))) >= 5 and re.search(r"\d.*[a-z]|[a-z].*\d", m.group(0), re.I)
+                        for m in _MODEL_CAND.finditer(title)))
+
+
+def _is_appliance(title: str) -> bool:
+    """가전 판단 (부속품 여부는 parse_product 에서 모델번호와 함께 봄). 모니터·노트북 등 디지털 신호가 있으면 가전 아님."""
+    if _APPL_DIGITAL.search(title):
+        return False
+    if _is_tv(title):
+        return True                                   # TV 는 'TV' 단어 없이도 가전 (Crystal UHD·KU65MH75AFXKR)
+    low = title.lower()
+    if not any(rx.search(low) for rx in _APPL_WORDS):
+        return False
+    body = title
+    for _ in range(4):                               # 판매처 말머리([하이마트몰] → 디지털 점수)는 빼고 제목만으로 판단
+        m = _LEAD_TAG.match(body)
+        if not m:
+            break
+        body = body[m.end():]
+    return categorize(body) == "가전"
+
+
+def _norm_model(tok: str) -> str:
+    tok = tok.split(".")[0] if re.search(r"\.[A-Za-z]{2,}$", tok) else tok   # 'B502S53.AKOR' → 지역 꼬리 제거
+    parts = tok.split("-")
+    if len(parts) > 1 and re.fullmatch(r"[A-Za-z]{1,3}", parts[-1]) and re.search(r"\d", "".join(parts[:-1])):
+        parts = parts[:-1]                                                    # 'DQ205PBBC-B' 같은 색상 꼬리
+    return "".join(parts).replace(".", "").upper()
+
+
+def _appliance_model(raw: str, toks: list[str]) -> Optional[str]:
+    """가전 제목의 모델번호 → 키 'M:<모델>' (짧은 모델은 'M:<브랜드>:<모델>'). 없거나 여러 모델이 섞였으면 None."""
+    body = re.sub(r"[(\[][^()\[\]]*(?:\d\s*원|\$|무료|무배|카드)[^()\[\]]*[)\]]", " ", raw)   # 가격·배송 괄호
+    body = re.sub(r"\d[\d,]*\s*원|\$\s*[\d,.]+", " ", body)
+    found: list[str] = []
+    for m in _MODEL_CAND.finditer(body):
+        tok = m.group(0).strip(".-")
+        flat = re.sub(r"[-.]", "", tok)
+        nd = sum(ch.isdigit() for ch in flat)
+        if len(flat) < 4 or not re.search(r"[A-Za-z]", flat) or nd == 0 or (nd == 1 and len(flat) < 6):
+            continue
+        if _NOT_MODEL.fullmatch(flat) or _NOT_MODEL.fullmatch(tok):
+            continue
+        norm = _norm_model(tok)
+        if norm not in found:
+            found.append(norm)
+    if not found:
+        return None
+    found.sort(key=len, reverse=True)
+    best = found[0]
+    for other in found[1:]:
+        # 시리즈명(MH80·Q9000)은 긴 모델번호에 묻힘. 길이가 비슷한 다른 모델이 또 있으면 묶음/택1 → 애매
+        if other not in best and len(other) >= 6 and len(other) >= 0.7 * len(best):
+            return None
+    if len(best) >= 7:
+        return f"M:{best}"
+    brand = next((w for w in toks if re.search(r"[가-힣a-z]", w) and w not in _BRAND_SKIP
+                  and _norm_model(w) != best and not re.search(r"\d", w)), "")
+    brand = {"엘지": "lg", "삼성전자": "삼성", "lg전자": "lg"}.get(brand, re.sub(r"전자$", "", brand))
+    if not brand:
+        return None
+    return f"M:{brand}:{best}"                       # 짧은 모델(T17DX3·W21WAM)은 브랜드와 함께 (다른 회사 같은 번호 방지)
+
+
 def parse_product(title: str) -> Optional[ProductInfo]:
     if not title:
         return None
@@ -506,6 +617,8 @@ def parse_product(title: str) -> Optional[ProductInfo]:
     t = " ".join(lead + [t])
     cond = bool(_COND.search(title))
     if _SKIP.search(t) or _too_many(raw):
+        return None
+    if _EVENT_ONLY.search(t) and not re.search(r"\d[\d,]*\s*원|\$\s*\d|\d+(?:\.\d+)?\s*만\s*원?", raw):
         return None
     t = _normalize(t)
     t = _protect(t)
@@ -621,6 +734,7 @@ def parse_product(title: str) -> Optional[ProductInfo]:
         if not w or w in _STOP_TOKENS:
             continue
         toks.append(w)
+    all_toks = list(toks)                             # 브랜드 포함 (가전 짧은 모델 키용)
     brandless = [w for w in toks if w not in _BRANDS]
     core = [w for w in brandless if not re.fullmatch(r"[\d.]+", w)]
     if brandless and core and not all(w in _GENERIC for w in core) and len("".join(core)) >= 2:
@@ -644,6 +758,16 @@ def parse_product(title: str) -> Optional[ProductInfo]:
         unit = None
     key = "".join(toks)
     alt_key = " ".join(sorted(toks))
+    if _is_appliance(title):
+        # R4 (사용자 결정, CLAUDE.md '상품 식별 방침'): 가전은 모델번호로만 같은 상품. 모델번호가 없으면 기록 안 함
+        model = _appliance_model(raw, all_toks)
+        part = _APPL_PART.search(_GIFT_CTX.sub(" ", title))
+        if part and model is None:
+            pass                                      # 모델 없는 소모품·부속품 (필터·세제…) → 일반 규칙
+        elif model is None or (count or 0) > 1:
+            return None                               # 모델 없음·여러 모델 묶음·여러 대 묶음 → 비교 불가
+        else:
+            return ProductInfo(name=name, key=model, alt_key=model, cond=cond)
     return ProductInfo(
         name=name, key=key, alt_key=alt_key, count=count, size=size_txt,
         size_g=round(total) if total else None, unit=unit, label=q.get("label") or "개",

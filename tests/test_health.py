@@ -203,6 +203,57 @@ run(fresh)
 check(not gh.open_for(health.COLLECT_KEY), "최신 status.json → 수집 실패 이슈 닫힘")
 check(health.status_is_stale(None) and not health.status_is_stale(fresh), "status_is_stale")
 
+# 9d) 단계 결과(env) 로 원인 구분
+def run_env(st, restore="", collect=""):
+    os.environ["RESTORE_OUTCOME"], os.environ["COLLECT_OUTCOME"] = restore, collect
+    try:
+        if st is None:
+            health.STATUS.unlink()
+            with redirect_stdout(io.StringIO()):
+                health.main([], session=gh)
+        else:
+            run(st)
+    finally:
+        del os.environ["RESTORE_OUTCOME"], os.environ["COLLECT_OUTCOME"]
+
+
+def titles(key):
+    return [i["title"] for i in gh.open_for(key)]
+
+
+# 가져오기 실패 (수집은 건너뜀, status.json 없음) → 가져오기 이슈만
+run_env(None, restore="failure", collect="skipped")
+check(len(gh.open_for(health.RESTORE_KEY)) == 1 and "가져오기" in titles(health.RESTORE_KEY)[0], "가져오기 실패 이슈")
+check(not gh.open_for(health.COLLECT_KEY), "가져오기 실패인데 collect 이슈가 열림")
+# 오래된 status.json 이 남아 있어도 가져오기 실패로 분류
+oldst = status(ppomppu="ok")
+oldst["run_at"] = (datetime.now(timezone.utc) - timedelta(minutes=300)).isoformat()
+health.STATUS.write_text(json.dumps(oldst), encoding="utf-8")
+os.environ["RESTORE_OUTCOME"] = "failure"
+with redirect_stdout(io.StringIO()):
+    health.main([], session=gh)
+del os.environ["RESTORE_OUTCOME"]
+check(len(gh.open_for(health.RESTORE_KEY)) == 1 and not gh.open_for(health.COLLECT_KEY), "오래된 status + 가져오기 실패")
+# 정상 실행 → 가져오기 이슈 닫힘
+fresh = status(ppomppu="ok", ppomppu_global="ok")
+fresh["run_at"] = datetime.now(timezone.utc).isoformat()
+run_env(fresh, restore="success", collect="success")
+check(not gh.open_for(health.RESTORE_KEY), "가져오기 이슈 닫힘")
+# collect 실패 + status 없음 → collect 이슈(일반 제목)
+run_env(None, restore="success", collect="failure")
+check(titles(health.COLLECT_KEY) == [f"{health.TITLE_PREFIX} collect.py 실행 실패"], f"collect 실패 제목: {titles(health.COLLECT_KEY)}")
+check(not gh.open_for(health.RESTORE_KEY), "collect 실패인데 가져오기 이슈")
+run_env(fresh, restore="success", collect="success")
+check(not gh.open_for(health.COLLECT_KEY), "collect 이슈 닫힘")
+# collect 실패 + 최신 status.json (알림 단계 등) → 변형 제목
+run_env(fresh, restore="success", collect="failure")
+check(len(gh.open_for(health.COLLECT_KEY)) == 1 and "알림 단계" in titles(health.COLLECT_KEY)[0], "알림 단계 collect 이슈")
+run_env(fresh, restore="success", collect="success")
+check(not gh.open_for(health.COLLECT_KEY), "알림 단계 이슈 닫힘")
+# 결과를 모르면(env 없음) 기존 동작: 최신 status → 이슈 없음
+run(fresh)
+check(not gh.open_for(health.COLLECT_KEY) and not gh.open_for(health.RESTORE_KEY), "env 없음 + 최신 status → 이슈 없음")
+
 # 10) GitHub API 고장 → 0 으로 끝나고 health.json 은 저장, 토큰 비출력
 bad = FakeGitHub()
 bad.fail = True

@@ -8,6 +8,9 @@ data/health.json 에 누적하고, 기준을 넘으면 GitHub 이슈를 열고 �
 - 이 스크립트는 어떤 경우에도 0 으로 끝난다 (모니터링 때문에 데이터 저장·배포가 막히면 안 됨).
 - 차단(blocked)은 robots.txt 금지(RobotsDisallowed)만 뜻한다. 서버 HTTP 403 등은 진짜 고장 신호라 실패로 센다.
 - collect.py 자체가 실패해 status.json 이 없거나 20분 넘게 오래됐으면 "collect.py 실행 실패" 이슈를 연다.
+- 워크플로가 RESTORE_OUTCOME / COLLECT_OUTCOME (steps.*.outcome) 을 넘기면 원인을 정확히 구분한다:
+  가져오기 실패 → "이전 데이터 가져오기 실패", 수집 실패 → "collect.py 실행 실패" (status.json 이 최신이면 "알림 단계 등").
+  값이 없으면(내 PC 등) status.json 이 없거나 오래됐는지로만 판단한다.
 - 토큰은 절대 출력하지 않는다 (에러 메시지에는 HTTP 상태 코드만).
 """
 from __future__ import annotations
@@ -34,6 +37,7 @@ TOTAL_KEY = "_total"          # 전체 딜 0개
 CHECK_KEY = "_check"          # tools/check.py 실패
 COLLECT_KEY = "_collect"      # collect.py 실행 실패 (status.json 없음/오래됨)
 TOTAL_ZERO_THRESHOLD = 2      # 전체 0개가 2회 연속일 때만 이슈 (한 번 삐끗한 실행은 무시)
+RESTORE_KEY = "_restore"      # 이전 누적 데이터 가져오기 단계 실패
 STALE_MINUTES = 20            # status.json 의 run_at 이 이보다 오래되면 이번 실행 결과가 아님
 API = "https://api.github.com"
 
@@ -101,6 +105,14 @@ def describe(key: str, health: dict) -> tuple[str, str]:
     if key == TOTAL_KEY:
         return (f"{TITLE_PREFIX} 전체 딜 0개",
                 "이번 수집에서 모든 소스를 합쳐 딜이 0개였습니다. 네트워크·공통 코드(collect.py, http.py) 문제일 수 있습니다.")
+    if key == RESTORE_KEY:
+        return (f"{TITLE_PREFIX} 이전 데이터 가져오기 실패",
+                "data 브랜치의 이전 누적 데이터를 가져오는 단계가 실패해서 이번 실행은 수집·저장·배포를 하지 않았습니다. "
+                "누적 기록 보호를 위해 일부러 멈춘 것이며 이전 사이트와 data 브랜치는 그대로입니다. 실행 기록의 해당 단계 로그를 확인하세요.")
+    if key == COLLECT_KEY and health.get("collect_detail") == "fresh":
+        return (f"{TITLE_PREFIX} collect.py 실행 실패 (알림 단계 등)",
+                "collect.py 가 비정상 종료했지만 status.json 은 이번 실행 것이 남아 있습니다. 수집 이후 단계(텔레그램 알림 등)에서 "
+                "오류가 났을 수 있습니다. 이번 실행은 data 브랜치 저장·배포를 하지 않았습니다. 실행 기록의 수집 단계 로그를 확인하세요.")
     if key == COLLECT_KEY:
         return (f"{TITLE_PREFIX} collect.py 실행 실패",
                 "수집 단계(collect.py)가 실패했거나 결과(status.json)를 남기지 못했습니다. "
@@ -222,13 +234,20 @@ def main(argv: list[str], session=None) -> int:
                 print(f"[health] 이슈 확인 실패: {e}")
         return 0
 
+    restore = os.environ.get("RESTORE_OUTCOME", "")
+    collect = os.environ.get("COLLECT_OUTCOME", "")
     status = load_json(STATUS, None)
-    if status_is_stale(status):
-        print(f"[health] {STATUS.name} 가 없거나 {STALE_MINUTES}분 넘게 오래됨 → collect.py 실행 실패로 간주")
+    if restore == "failure" or status_is_stale(status):
+        if restore == "failure":
+            print("[health] 이전 데이터 가져오기 단계 실패 → 수집은 실행되지 않음")
+            v = {RESTORE_KEY: "broken", COLLECT_KEY: "ok"}
+        else:
+            print(f"[health] {STATUS.name} 가 없거나 {STALE_MINUTES}분 넘게 오래됨 → collect.py 실행 실패로 간주")
+            v = {COLLECT_KEY: "broken", RESTORE_KEY: "ok"}
         gh = make_github(session)
         if gh:
             try:
-                sync_issues(gh, {COLLECT_KEY: "broken"}, {})
+                sync_issues(gh, v, {})
             except Exception as e:
                 print(f"[health] 이슈 확인 실패: {e}")
         return 0
@@ -236,7 +255,13 @@ def main(argv: list[str], session=None) -> int:
     if not isinstance(health, dict):
         health = {}
     verdict = update_streaks(health, status)
-    verdict[COLLECT_KEY] = "ok"  # 최신 status.json 이 있으니 collect.py 는 돌았음
+    verdict[RESTORE_KEY] = "ok"
+    if collect == "failure":  # 최신 status.json 은 있지만 collect.py 가 비정상 종료 (알림 단계 등)
+        health["collect_detail"] = "fresh"
+        verdict[COLLECT_KEY] = "broken"
+    else:
+        health.pop("collect_detail", None)
+        verdict[COLLECT_KEY] = "ok"  # 최신 status.json 이 있으니 collect.py 는 돌았음
     verdict[CHECK_KEY] = "ok"  # 여기까지 왔으면 배포 전 점검은 통과한 것
     health["updated_at"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     try:

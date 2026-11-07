@@ -52,6 +52,7 @@ jobs:
         run: python tools/health.py --check-failed
 
       - name: 이전 누적 데이터 가져오기
+        id: restore
         run: |
           # data 브랜치가 '정말 없을 때만' 새로 시작. 있는데 못 가져오면 실패시켜서
           # 빈 데이터로 누적 가격 기록(history.json)을 덮어쓰는 사고를 막음
@@ -69,6 +70,7 @@ jobs:
           fi
 
       - name: 수집
+        id: collect
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
@@ -84,6 +86,8 @@ jobs:
         timeout-minutes: 3
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          RESTORE_OUTCOME: ${{ steps.restore.outcome }}   # 실패 원인 구분용 (success/failure/skipped)
+          COLLECT_OUTCOME: ${{ steps.collect.outcome }}
         run: python tools/health.py
 
       - name: 누적 데이터 저장 (data 브랜치)

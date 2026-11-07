@@ -37,3 +37,7 @@ hotdeal/sources/*.py ──Deal──▶ store.merge ─▶ dedup.group_deals �
 ## 피드백 루프 (상호보완)
 `critic` 비판 → 총괄이 채택/기각 → 소유 에이전트가 개선 → `reviewer` 검증 → 다음 라운드에 `critic` 이 재확인.
 자세한 절차·형식: `docs/feedback/README.md`. 한 번에 돌리기: `/improve-cycle`.
+
+## 상품 식별 방침 (사용자 결정)
+- 조건부 가격(카드·멤버십·쿠폰·농할 등)은 역대 최저가 계산에서 제외하고 따로 표시.
+- 가전은 모델번호로만 같은 상품을 판단. 모델번호가 없는 가전 글은 역대 최저가 기록에서 제외.
