@@ -276,6 +276,22 @@
       ? `<div class="ptrend"><a href="product.html?id=${esc(encodeURIComponent(pid))}">📈 가격 추이 보기</a></div>` : "";
   };
 
+  // 화면 표시용 제목: 판매처 배지가 따로 보이므로 제목 맨 앞의 "[쿠팡]" "【G마켓】" "(11번가)" 같은 판매처 태그는 뗌.
+  // 원래 제목은 마우스를 올리면(title 속성) 보이고, 저장 데이터·가격 기록에는 손대지 않음.
+  const norm = (s) => String(s || "").toLowerCase().replace(/[\s\-_.·]/g, "");
+  function shownTitle(g) {
+    const t = String(g.title || "");
+    const shop = norm(g.shop);
+    if (!shop) return t;
+    const m = t.match(/^\s*[\[【(]([^\]】)]{1,20})[\]】)]\s*/);
+    if (!m) return t;
+    const tag = norm(m[1]);
+    const rest = t.slice(m[0].length).trim();
+    // 태그가 판매처와 같거나 서로 포함하면(지마켓↔G마켓 표기 차이는 판매처 배지가 원문 그대로라 대부분 같음) 제거
+    if (rest && (tag === shop || tag.includes(shop) || shop.includes(tag))) return rest;
+    return t;
+  }
+
   function card(g, meta) {
     const main = g.sources[0];
     const srcs = g.sources.map((s) =>
@@ -285,7 +301,7 @@
       ? `<img class="thumb" src="${esc(safeUrl(g.thumbnail))}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'">`
       : `<div class="thumb"></div>`;
     return `<li class="deal${g.ended ? " ended" : ""}">${thumb}<div class="body">
-      <a class="title" href="${esc(safeUrl(main.url))}" target="_blank" rel="noopener nofollow">${esc(g.title)}</a>
+      <a class="title" href="${esc(safeUrl(main.url))}" target="_blank" rel="noopener nofollow" title="${esc(g.title)}">${esc(shownTitle(g))}</a>
       <div class="row">
         ${price(g) ? `<span class="price">${esc(price(g))}</span>` : ""}
         ${g.shop ? `<span class="shop">${esc(g.shop)}</span>` : ""}

@@ -33,7 +33,7 @@ h1 { font-size: 20px; margin: 0; white-space: nowrap; }
 .seg button.on { background: var(--accent); color: #fff; }
 select { padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
 .chk { font-size: 14px; color: var(--muted); display: inline-flex; gap: 4px; align-items: center; cursor: pointer; }
-.chips { display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; scrollbar-width: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }  /* 줄바꿈: 마우스로도 모든 칩이 보이게 */
 .chip { flex: none; border: 1px solid var(--line); background: var(--chip); color: var(--text); border-radius: 999px; padding: 3px 10px; font-size: 13px; cursor: pointer; }
 .chip.off { opacity: .4; text-decoration: line-through; }
 .meta { color: var(--muted); font-size: 13px; margin: 12px 0 8px; }
@@ -110,7 +110,7 @@ code { background: var(--chip); padding: 0 4px; border-radius: 4px; }
 .ptrend a { color: var(--link); }
 .ptrend a:hover { text-decoration: underline; }
 /* 카테고리 칩 줄 (가로 스크롤) */
-.cats { display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; scrollbar-width: none; }
+.cats { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .cats:empty { display: none; }
 .cat { flex: none; border: 1px solid var(--line); background: var(--card); color: var(--text); border-radius: 999px; padding: 3px 10px; font-size: 13px; cursor: pointer; }
 .cat small { color: var(--muted); margin-left: 2px; }
@@ -174,3 +174,7 @@ code { background: var(--chip); padding: 0 4px; border-radius: 4px; }
 .ptitle .plink { white-space: normal; }
 .ptag.end { margin-left: 2px; }
 .top h1 a:hover { color: var(--link); }
+/* 휴대폰은 손가락으로 옆으로 넘길 수 있으니 한 줄 가로 스크롤 유지 (상단 고정 영역이 너무 커지지 않게) */
+@media (max-width: 560px) and (pointer: coarse) {
+  .chips, .cats { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+}

@@ -118,6 +118,10 @@ def main() -> None:
 
     new_ids = set(store.merge(st, fresh))
     store.prune(st)
+    # 꺼진 소스(ENABLED=False)의 딜은 72시간 기다리지 않고 목록에서 바로 뺌 (가격 기록에는 남음)
+    live_keys = {m.SOURCE.key for m in mods}
+    for k in [k for k, d in st["deals"].items() if d.get("source") not in live_keys]:
+        del st["deals"][k]
     groups = dedup.group_deals(list(st["deals"].values()), st.get("deal_group"))
     st["deal_group"] = {s["id"]: g["gid"] for g in groups for s in g["sources"]}
     store.save_store(st)

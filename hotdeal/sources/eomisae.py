@@ -17,7 +17,8 @@ from ..parse import extract_price_krw, extract_shop, parse_kr_datetime, to_int
 BASE = "https://eomisae.co.kr"
 LIST_URL = BASE + "/os"
 SOURCE = SourceInfo(key="eomisae", name="어미새", region="kr", kind="community", homepage=LIST_URL)
-ENABLED = True
+# 사용자 요청으로 수집 제외 (2026-11-07)
+ENABLED = False
 MAX_BACKFILL_PAGES = 1  # ?page=2 가 403 으로 막힘(2026-11 실측) → 백필 불가
 
 
