@@ -1,0 +1,44 @@
+{
+ "sources": {
+  "arca": {
+   "fail_streak": 0,
+   "zero_streak": 0,
+   "state": "blocked"
+  },
+  "clien": {
+   "fail_streak": 0,
+   "zero_streak": 0,
+   "state": "ok"
+  },
+  "dealbada": {
+   "fail_streak": 1,
+   "zero_streak": 0,
+   "state": "error",
+   "last_error": "ReadTimeout: HTTPSConnectionPool(host='www.dealbada.com', port=443): Read timed out. (read timeout=15)"
+  },
+  "dealnews": {
+   "fail_streak": 0,
+   "zero_streak": 0,
+   "state": "ok"
+  },
+  "ppomppu": {
+   "fail_streak": 0,
+   "zero_streak": 0,
+   "state": "ok"
+  },
+  "ppomppu_global": {
+   "fail_streak": 0,
+   "zero_streak": 0,
+   "state": "ok"
+  },
+  "ruliweb": {
+   "fail_streak": 0,
+   "zero_streak": 0,
+   "state": "ok"
+  }
+ },
+ "total_count": 190,
+ "run_at": "2026-11-29T04:35:09+09:00",
+ "updated_at": "2026-11-28T19:36:09+00:00",
+ "total_zero_streak": 0
+}
